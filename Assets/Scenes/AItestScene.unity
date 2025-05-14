@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   apiKey: AIzaSyCJsIsZdQpYYUegM_9bO5UXKKtBARP60lk
-  userInput: "\uC548\uB155! \uB108\uB294 \uB204\uAD6C\uC57C?"
 --- !u!4 &894222241
 Transform:
   m_ObjectHideFlags: 0
