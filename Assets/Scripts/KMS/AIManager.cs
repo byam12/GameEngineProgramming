@@ -2,11 +2,24 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
+using System;
 
-public class GeminiChat : MonoBehaviour
+public class AIManager : MonoBehaviour
 {
-    private int gameOverCount;//지금까지 몇번 실패했는지
-    private int lastStageInfo;//이전 게임에서 스테이지 몇에서 게임오버했는지.
+    public static AIManager Instance { get; private set; }
+    void Awake(){
+        if (Instance == null){
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 중복 방지
+        }
+    }
+    private int gameOverCount = 0;//지금까지 몇번 실패했는지
+    private int lastStageInfo = 0;//이전 게임에서 스테이지 몇에서 게임오버했는지.
+    private string userInput;//npc에게 물어볼 내용
 
     [Header("Gemini2.0 flash API Key")]
     public string apiKey = "AIzaSyCJsIsZdQpYYUegM_9bO5UXKKtBARP60lk";
@@ -17,25 +30,33 @@ public class GeminiChat : MonoBehaviour
     public void SetLastStageInfo(int lastStageInfo){
         this.lastStageInfo = lastStageInfo;
     }
-    void Start()
-    {
-        SetGameOverCount(6);
-        SetLastStageInfo(7);
+    public void SetUsetInputAndRequest(string userInput ){
+        this.userInput = userInput;
         RequestGemini();
     }
+    // void Start()
+    // {
+    //     SetGameOverCount(6);
+    //     SetLastStageInfo(7);
+    //     RequestGemini();
+    // }
     public void RequestGemini(){ //inputText만들고 요청하기
         inputText = @$"
+        -설정-
         게임오버횟수:{gameOverCount}번
         직전스테이지:{lastStageInfo}층
         npc정보:
-        (세계관 배경은 중세판타지이고, 계속해서 도전하는 플레이어에게 항상 문을 열어주는 문지기, 장난끼 많고 놀리는걸 좋아하여 실패한 플레이어를 놀린다.
-        갑옷으로 온몸을 가린 남성이며 누구에게나 반말을 쓴다.)
+        (세계관 배경은 중세판타지이고, 계속해서 도전하는 플레이어에게 항상 문을 열어주는 문지기
+        갑옷으로 온몸을 가린 남성. 진중한 성격)
         응답형식:
-        (npc의 입장에서 대답을 해줘야 한다. 또한 대답 형식은 여러줄로 해주어야 하고 줄바꿈은 \n으로 해줘야 한다.
+        (npc의 입장에서 대답을 해줘야 한다. 또한 대답 형식은 여러줄로 적당히 나누어서 해주어야 하고 줄바꿈은 \n으로 해줘야 한다.
         게임오버횟수만큼 실패하였다는 언급, 직전스테이지만큼의 층까지 도달하였다는 언급은 필수이다. 
-        직저스테이지에 따라 어느정도 잘했는지 못했는지에 대한 반응을 보여준다.(던전은 총 9층으로 이에 대한 평가를 해준다. 다만 던전이 9층이라는 것은 비밀이다.)
-        직전스테이지가 8,9층의 경우 놀리다가도 그 직후에 너라면 할 수 있을거라는 격려를 해준다.
-        그리고 대화의 마지막엔 이제 문을 열어주겠다는 언급과 함께 항상 행운을 빈다고 말해줘야 한다.)";
+        직전스테이지에 따라 어느정도 잘했는지 못했는지에 대한 반응을 보여준다.(던전은 총 9층으로 이에 대한 평가를 해준다. 다만 던전이 9층이라는 것은 비밀이다.)
+        그리고 대화의 마지막엔 이제 문을 열어주겠다는 언급과 함께 항상 행운을 빈다고 말해줘야 한다.)
+        -대화-
+        플레이어:{userInput}";
+        //inputText = @$"{userInput}";
+
         StartCoroutine(SendGeminiRequest(inputText));
     }
 
@@ -78,6 +99,7 @@ public class GeminiChat : MonoBehaviour
             {
                 string reply = response.candidates[0].content.parts[0].text;
                 Debug.Log("Gemini 응답: " + reply);
+                dialogBarManager.Instance.PrintResponse(reply);
             }
         }
         else
