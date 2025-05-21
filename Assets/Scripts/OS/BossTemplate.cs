@@ -20,20 +20,19 @@ public interface IBossCommand
 public class AttackCommand : ScriptableObject, IBossCommand
 {
     public string trigger;
-    public GameObject hitAreaObject;
+    public int hitboxIndex; // i will add mulitple hitboxes in boss' child, then assign index of hitbox to be active
     public UnityEvent onAttackEvent;
     public List<AttackCommand> nextCommands = new List<AttackCommand>();
 
     public IEnumerator Execute(BossTemplate boss)
     {
         boss.Animator.SetTrigger(trigger);
-        if (hitAreaObject) hitAreaObject.SetActive(true);
         onAttackEvent.Invoke();
-        boss.DoHitCheck(hitAreaObject);
+        boss.HitboxOn(hitboxIndex);
+
         yield return new WaitUntil(() =>
             boss.Animator.GetCurrentAnimatorStateInfo(0).IsName(trigger) &&
             boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-        if (hitAreaObject) hitAreaObject.SetActive(false);
         if (boss.IsParried) yield break;
         if (boss.IsGroggy) yield break;
         foreach (var next in nextCommands)
@@ -52,6 +51,7 @@ public class BossTemplate : MonoBehaviour
     public float groggyThreshold;
     public BossState state;
     private Coroutine routine;
+    public List<GameObject> hitbox = new List<GameObject>();
     public bool IsParried { get; private set; }
     public bool IsGroggy { get; private set; }
 
@@ -97,9 +97,10 @@ public class BossTemplate : MonoBehaviour
         }
     }
 
-    public void DoHitCheck(GameObject hitArea)
+    public void HitboxOn(int hitboxIndex)
     {
-        //change
+        hitbox[hitboxIndex].gameObject.SetActive(true);
+        //in hit box script -> onenable -> coroutine, wait some times, then check hit, then set active false
     }
 
     public void EnterParried()
