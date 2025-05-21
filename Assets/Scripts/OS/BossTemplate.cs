@@ -3,158 +3,126 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum BossState { Idle, Attack, Groggy, Parried }
-
-[System.Serializable]
-public class Attack
+public interface IBossCommand
 {
-    [Header("공격 이름? 필요한가 ")]
-    public string name;
+    IEnumerator Execute(BossTemplate boss);
+}
 
-    [Header("Animator 트리거 이름")]
+[CreateAssetMenu(menuName = "Boss/Commands/AttackCommand")]
+public class AttackCommand : ScriptableObject, IBossCommand
+{
     public string trigger;
-
-    [Header("공격범위 ")]
-    public float hitRange = 1f;
-
-    [Header("공격 시 추가 기능 효과음이나, 어떤 효과 여기 넣기")]
+    public GameObject hitAreaObject;
     public UnityEvent onAttackEvent;
+    public List<AttackCommand> nextCommands = new List<AttackCommand>();
 
-    [Header("다음 공격들")]
-    public List<Attack> nextAttacks = new List<Attack>();
+    public IEnumerator Execute(BossTemplate boss)
+    {
+        boss.Animator.SetTrigger(trigger);
+        if (hitAreaObject) hitAreaObject.SetActive(true);
+        onAttackEvent.Invoke();
+        boss.DoHitCheck(hitAreaObject);
+        yield return new WaitUntil(() =>
+            boss.Animator.GetCurrentAnimatorStateInfo(0).IsName(trigger) &&
+            boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+        if (hitAreaObject) hitAreaObject.SetActive(false);
+        if (boss.IsParried) yield break;
+        if (boss.IsGroggy) yield break;
+        foreach (var next in nextCommands)
+        {
+            yield return boss.StartCoroutine(next.Execute(boss));
+            if (boss.IsParried || boss.IsGroggy) yield break;
+        }
+    }
 }
 
 public class BossTemplate : MonoBehaviour
 {
-    [Header("첫 공격 가능한 것들 넣기")]
-    public List<Attack> initialAttacks = new List<Attack>();
-
-    [Header("현재상태확인용")]
-    public BossState state = BossState.Idle;
-
-    [Header("애니메이터 넣기 안에 애니메이션도")]
-    public Animator animator;
-
-    [Header("체력이랑 패링게이지?")]
+    public List<ScriptableObject> initialCommands = new List<ScriptableObject>();
+    public Animator Animator;
     public float stamina = 100f;
-    public float groggyThreshold = 0f;
+    public float groggyThreshold;
+    public BossState state;
+    private Coroutine routine;
+    public bool IsParried { get; private set; }
+    public bool IsGroggy { get; private set; }
 
-    private Coroutine comboRoutine;
-    private bool isParried = false;
-    private bool isGroggy = false;
-
-    public void Update()
+    void Awake()
     {
-        if (state == BossState.Idle && canStartAttack())
-        {
-            startAttackCombo();
-        }
+        Animator = GetComponent<Animator>();
+    }
 
-        if (state == BossState.Attack && checkParryInput())
+    void Update()
+    {
+        if (state == BossState.Idle && CanStartAttack())
         {
-            isParried = true;
+            StartPattern();
+        }
+        if (state == BossState.Attack && CheckParryInput())
+        {
+            IsParried = true;
         }
     }
 
-    public bool canStartAttack()
+    bool CanStartAttack()
     {
-        // need to change
-        return Vector3.Distance(transform.position, playerPosition()) < 3f;
+        return Vector3.Distance(transform.position, PlayerPosition()) < 3f;
     }
 
-    public bool checkParryInput()
+    bool CheckParryInput()
     {
-        //need to chang 
         return false;
     }
 
-    public void startAttackCombo()
+    void StartPattern()
     {
         state = BossState.Attack;
-        isParried = false;
-        isGroggy = false;
-
-        if (initialAttacks != null && initialAttacks.Count > 0)
+        IsParried = false;
+        IsGroggy = false;
+        foreach (var obj in initialCommands)
         {
-            var first = initialAttacks[Random.Range(0, initialAttacks.Count)];
-            comboRoutine = StartCoroutine(doAttack(first));
-        }
-        else
-        {
-            state = BossState.Idle;
+            if (obj is IBossCommand cmd)
+            {
+                routine = StartCoroutine(cmd.Execute(this));
+                break;
+            }
         }
     }
 
-    public IEnumerator doAttack(Attack atk)
+    public void DoHitCheck(GameObject hitArea)
     {
-        animator.SetTrigger(atk.trigger);
-
-        atk.onAttackEvent?.Invoke();
-
-        doHitCheck(atk.hitRange);
-
-        yield return new WaitUntil(() =>
-            animator.GetCurrentAnimatorStateInfo(0).IsName(atk.trigger) &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-
-        if (isParried)
-        {
-            checkParry();
-            yield break;
-        }
-        if (isGroggy)
-        {
-            checkgroggy();
-            yield break;
-        }
-
-        if (atk.nextAttacks != null && atk.nextAttacks.Count > 0)
-        {
-            var next = atk.nextAttacks[Random.Range(0, atk.nextAttacks.Count)];
-            yield return doAttack(next);
-        }
-        else
-        {
-            state = BossState.Idle;
-        }
+        //change
     }
 
-    public void doHitCheck(float range)
+    public void EnterParried()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, LayerMask.GetMask("Player"));
-        foreach (var c in hits)
-        {
-            //need to change 
-        }
-    }
-
-    public void checkParry()
-    {
-        if (comboRoutine != null)
-            StopCoroutine(comboRoutine);
+        if (routine != null) StopCoroutine(routine);
         state = BossState.Parried;
-        animator.SetTrigger("Parried");
+        Animator.SetTrigger("Parried");
+        IsParried = true;
     }
 
-    public void checkgroggy()
+    public void EnterGroggy()
     {
-        if (comboRoutine != null)
-            StopCoroutine(comboRoutine);
+        if (routine != null) StopCoroutine(routine);
         state = BossState.Groggy;
-        animator.SetTrigger("Groggy");
-        StartCoroutine(wakeUp());
+        Animator.SetTrigger("Groggy");
+        StartCoroutine(Wakeup());
+        IsGroggy = true;
     }
 
-    public IEnumerator wakeUp()
+    IEnumerator Wakeup()
     {
         yield return new WaitForSeconds(2f);
         stamina = 100f;
         state = BossState.Idle;
+        IsParried = false;
+        IsGroggy = false;
     }
 
-    public Vector3 playerPosition()
+    Vector3 PlayerPosition()
     {
-        //need to change
+        //change
         return Vector3.zero;
     }
 }
