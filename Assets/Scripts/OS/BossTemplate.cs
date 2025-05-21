@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum BossState
+{
+    Idle,
+    Attack,
+    Parried,
+    Groggy
+}
+
 public interface IBossCommand
 {
     IEnumerator Execute(BossTemplate boss);
