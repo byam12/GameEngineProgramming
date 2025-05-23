@@ -57,6 +57,7 @@ public class dialogBarManager : MonoBehaviour
     public void PrintResponse(string input)
     {
         strArr = SplitByNewline(input);
+        strIndex = 0;
         PrintTypewriter(strArr[strIndex]);
     }
     private void printNextResponse()
