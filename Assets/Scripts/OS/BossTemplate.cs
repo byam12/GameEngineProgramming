@@ -1,7 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Scripting.APIUpdating;
 
 public enum BossState
 {
@@ -20,7 +22,7 @@ public interface IBossCommand
 public class AttackCommand : ScriptableObject, IBossCommand
 {
     public string trigger;
-    public int hitboxIndex; // i will add mulitple hitboxes in boss' child, then assign index of hitbox to be active
+    public int hitboxIndex;
     public UnityEvent onAttackEvent;
     public List<AttackCommand> nextCommands = new List<AttackCommand>();
 
@@ -30,16 +32,24 @@ public class AttackCommand : ScriptableObject, IBossCommand
         onAttackEvent.Invoke();
         boss.HitboxOn(hitboxIndex);
 
+        Debug.Log("trigger : " + trigger + " index is : " + hitboxIndex);
+
         yield return new WaitUntil(() =>
             boss.Animator.GetCurrentAnimatorStateInfo(0).IsName(trigger) &&
             boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-        if (boss.IsParried) yield break;
-        if (boss.IsGroggy) yield break;
-        foreach (var next in nextCommands)
+
+        if (boss.IsParried || boss.IsGroggy)
+            yield break;
+
+        foreach (IBossCommand next in nextCommands)
         {
             yield return boss.StartCoroutine(next.Execute(boss));
-            if (boss.IsParried || boss.IsGroggy) yield break;
+            if (boss.IsParried || boss.IsGroggy)
+                yield break;
         }
+
+        Debug.Log("end attack patterns");
+
     }
 }
 
@@ -51,10 +61,13 @@ public class BossTemplate : MonoBehaviour
     public float groggyThreshold;
     public BossState state;
     private Coroutine routine;
+
     public List<GameObject> hitbox = new List<GameObject>();
     public bool IsParried { get; private set; }
     public bool IsGroggy { get; private set; }
 
+    private const string WalkParam = "IsWalking";
+    public bool running = false;
     void Awake()
     {
         Animator = GetComponent<Animator>();
@@ -62,9 +75,24 @@ public class BossTemplate : MonoBehaviour
 
     void Update()
     {
+
+        if ((this.transform.position - PlayerPosition()).magnitude > 5f)
+            {
+                SetIdle();
+            }
+
+
+
+
         if (state == BossState.Idle && CanStartAttack())
         {
+            //SetIdle();
             StartPattern();
+        }
+        else if (state == BossState.Idle && !CanStartAttack())
+        {
+            Debug.Log("too far");
+            Move();
         }
         if (state == BossState.Attack && CheckParryInput())
         {
@@ -79,28 +107,41 @@ public class BossTemplate : MonoBehaviour
 
     bool CheckParryInput()
     {
-        return false;
+        return false; // change
+    }
+
+    private void Move()
+    {
+        Animator.SetBool(WalkParam, true);
+        transform.position = Vector3.MoveTowards(transform.position, PlayerPosition(), Time.deltaTime);
     }
 
     void StartPattern()
     {
+        if (running)
+            return;
+        Animator.SetBool(WalkParam, false);
+
         state = BossState.Attack;
         IsParried = false;
         IsGroggy = false;
+        running = true;
         foreach (var obj in initialCommands)
         {
             if (obj is IBossCommand cmd)
             {
                 routine = StartCoroutine(cmd.Execute(this));
-                break;
+                //break;
             }
         }
+        running = false;
+        SetIdle();
     }
 
     public void HitboxOn(int hitboxIndex)
     {
-        hitbox[hitboxIndex].gameObject.SetActive(true);
-        //in hit box script -> onenable -> coroutine, wait some times, then check hit, then set active false
+        hitbox[hitboxIndex].SetActive(true);
+        Debug.Log(hitboxIndex + " hitbox should be active");
     }
 
     public void EnterParried()
@@ -125,13 +166,22 @@ public class BossTemplate : MonoBehaviour
         yield return new WaitForSeconds(2f);
         stamina = 100f;
         state = BossState.Idle;
+        Animator.SetBool(WalkParam, false);
         IsParried = false;
         IsGroggy = false;
     }
 
     Vector3 PlayerPosition()
     {
-        //change
+        // change
         return Vector3.zero;
+    }
+
+    public void SetIdle()
+    {
+        state = BossState.Idle;
+        Animator.SetTrigger("Idle");
+        Animator.SetBool(WalkParam, false);
+        Debug.Log("setIdle");
     }
 }
