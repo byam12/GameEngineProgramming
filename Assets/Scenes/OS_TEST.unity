@@ -542,7 +542,8 @@ MonoBehaviour:
   - {fileID: 1359793458}
   - {fileID: 778751886}
   - {fileID: 1390382520}
-  done: 1
+  running: 0
+  moving: 0
 --- !u!95 &768138832
 Animator:
   serializedVersion: 7
@@ -712,7 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe5925894bb47a14f9fd1499c6b793a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 0.2
+  fadeDuration: 0.3
   checkDuration: 0.2
   rend: {fileID: 0}
   col: {fileID: 0}
@@ -951,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe5925894bb47a14f9fd1499c6b793a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 0.2
+  fadeDuration: 0.4
   checkDuration: 0.1
   rend: {fileID: 0}
   col: {fileID: 0}

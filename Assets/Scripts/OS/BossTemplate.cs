@@ -33,19 +33,27 @@ public class AttackCommand : ScriptableObject, IBossCommand
         boss.HitboxOn(hitboxIndex);
 
         Debug.Log("trigger : " + trigger + " index is : " + hitboxIndex);
-
-        yield return new WaitUntil(() =>
-            boss.Animator.GetCurrentAnimatorStateInfo(0).IsName(trigger) &&
-            boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+        AnimatorClipInfo[] clipInfos = boss.Animator.GetCurrentAnimatorClipInfo(0);
+        float waitTime = (clipInfos.Length > 0)
+         ? clipInfos[0].clip.length
+         : 1f;
+        yield return new WaitForSeconds(waitTime);
 
         if (boss.IsParried || boss.IsGroggy)
             yield break;
 
-        foreach (IBossCommand next in nextCommands)
+        if (nextCommands != null && nextCommands.Count > 0)
         {
-            yield return boss.StartCoroutine(next.Execute(boss));
-            if (boss.IsParried || boss.IsGroggy)
-                yield break;
+            int choice = Random.Range(-1, nextCommands.Count);
+            if (choice >= 0)
+            {
+                IBossCommand next = nextCommands[choice];
+                yield return boss.StartCoroutine(next.Execute(boss));
+            }
+            else
+            {
+                Debug.Log("end pattern");
+            }
         }
 
         Debug.Log("end attack patterns");
@@ -68,6 +76,7 @@ public class BossTemplate : MonoBehaviour
 
     private const string WalkParam = "IsWalking";
     public bool running = false;
+    public bool moving = false;
     void Awake()
     {
         Animator = GetComponent<Animator>();
@@ -76,7 +85,7 @@ public class BossTemplate : MonoBehaviour
     void Update()
     {
 
-        if ((this.transform.position - PlayerPosition()).magnitude > 5f)
+        if ((this.transform.position - PlayerPosition()).magnitude > 5f && !running && !moving)
             {
                 SetIdle();
             }
@@ -93,6 +102,14 @@ public class BossTemplate : MonoBehaviour
         {
             Debug.Log("too far");
             Move();
+        }
+
+        if(state == BossState.Attack && CanStartAttack())
+        {
+            if(!running)
+            StartPattern();
+            else
+                return;
         }
         if (state == BossState.Attack && CheckParryInput())
         {
@@ -112,7 +129,9 @@ public class BossTemplate : MonoBehaviour
 
     private void Move()
     {
+        moving = true;
         Animator.SetBool(WalkParam, true);
+        if(!running)
         transform.position = Vector3.MoveTowards(transform.position, PlayerPosition(), Time.deltaTime);
     }
 
@@ -120,23 +139,27 @@ public class BossTemplate : MonoBehaviour
     {
         if (running)
             return;
-        Animator.SetBool(WalkParam, false);
+        StartCoroutine(PatternRoutine());
+    }
 
-        state = BossState.Attack;
-        IsParried = false;
-        IsGroggy = false;
-        running = true;
-        foreach (var obj in initialCommands)
+    private IEnumerator PatternRoutine()
+{
+    running = true;
+        moving = false;
+    Animator.SetBool(WalkParam, false);
+    state = BossState.Attack;
+    IsParried = IsGroggy = false;
+
+        if (initialCommands.Count > 0)
         {
-            if (obj is IBossCommand cmd)
-            {
-                routine = StartCoroutine(cmd.Execute(this));
-                //break;
-            }
+            int idx = Random.Range(0, initialCommands.Count);
+            if (initialCommands[idx] is IBossCommand cmd)
+                yield return StartCoroutine(cmd.Execute(this));
         }
         running = false;
-        SetIdle();
-    }
+    SetIdle();
+}
+
 
     public void HitboxOn(int hitboxIndex)
     {
@@ -183,5 +206,7 @@ public class BossTemplate : MonoBehaviour
         Animator.SetTrigger("Idle");
         Animator.SetBool(WalkParam, false);
         Debug.Log("setIdle");
+        moving = false;
+        running = false;
     }
 }
