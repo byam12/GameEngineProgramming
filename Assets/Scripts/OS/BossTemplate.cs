@@ -34,9 +34,12 @@ public class AttackCommand : ScriptableObject, IBossCommand
 
         Debug.Log("trigger : " + trigger + " index is : " + hitboxIndex);
         AnimatorClipInfo[] clipInfos = boss.Animator.GetCurrentAnimatorClipInfo(0);
-        float waitTime = (clipInfos.Length > 0)
-         ? clipInfos[0].clip.length
-         : 1f;
+        float waitTime = 1f;
+        if (clipInfos.Length > 0)
+        {
+            waitTime = clipInfos[0].clip.length;
+        }
+        
         yield return new WaitForSeconds(waitTime);
 
         if (boss.IsParried || boss.IsGroggy)
