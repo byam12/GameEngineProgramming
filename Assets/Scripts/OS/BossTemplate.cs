@@ -19,18 +19,20 @@ public interface IBossCommand
 }
 
 [CreateAssetMenu(menuName = "Boss/Commands/AttackCommand")]
-public class AttackCommand : ScriptableObject, IBossCommand
+public class BossCommand : ScriptableObject, IBossCommand
 {
     public string trigger;
     public int hitboxIndex;
     public UnityEvent onAttackEvent;
-    public List<AttackCommand> nextCommands = new List<AttackCommand>();
+    public List<BossCommand> nextCommands = new List<BossCommand>();
 
     public IEnumerator Execute(BossTemplate boss)
     {
-        boss.Animator.SetTrigger(trigger);
+        if (trigger != null)
+        { boss.Animator.SetTrigger(trigger); }
         onAttackEvent.Invoke();
-        boss.HitboxOn(hitboxIndex);
+        if (hitboxIndex != null)
+        { boss.HitboxOn(hitboxIndex); }
 
         Debug.Log("trigger : " + trigger + " index is : " + hitboxIndex);
         AnimatorClipInfo[] clipInfos = boss.Animator.GetCurrentAnimatorClipInfo(0);
@@ -80,6 +82,10 @@ public class BossTemplate : MonoBehaviour
     private const string WalkParam = "IsWalking";
     public bool running = false;
     public bool moving = false;
+
+    public float attackCoolTiem = 2f;
+    public float nextPatternPossible = 0f;
+
     void Awake()
     {
         Animator = GetComponent<Animator>();
@@ -96,18 +102,18 @@ public class BossTemplate : MonoBehaviour
 
 
 
-        if (state == BossState.Idle && CanStartAttack())
+        if (state == BossState.Idle && isPlayerClose())
         {
             //SetIdle();
             StartPattern();
         }
-        else if (state == BossState.Idle && !CanStartAttack())
+        else if (state == BossState.Idle && !isPlayerClose())
         {
             Debug.Log("too far");
             Move();
         }
 
-        if(state == BossState.Attack && CanStartAttack())
+        if(state == BossState.Attack && isPlayerClose() && Time.time > nextPatternPossible)
         {
             if(!running)
             StartPattern();
@@ -120,7 +126,7 @@ public class BossTemplate : MonoBehaviour
         }
     }
 
-    bool CanStartAttack()
+    bool isPlayerClose()
     {
         return Vector3.Distance(transform.position, PlayerPosition()) < 3f;
     }
@@ -142,16 +148,21 @@ public class BossTemplate : MonoBehaviour
     {
         if (running)
             return;
-        StartCoroutine(PatternRoutine());
+
+        if (routine != null)
+        {
+            StopCoroutine(routine);
+        }
+        routine = StartCoroutine(PatternRoutine());
     }
 
     private IEnumerator PatternRoutine()
-{
-    running = true;
+    {
+        running = true;
         moving = false;
-    Animator.SetBool(WalkParam, false);
-    state = BossState.Attack;
-    IsParried = IsGroggy = false;
+        Animator.SetBool(WalkParam, false);
+        state = BossState.Attack;
+        IsParried = IsGroggy = false;
 
         if (initialCommands.Count > 0)
         {
@@ -160,8 +171,9 @@ public class BossTemplate : MonoBehaviour
                 yield return StartCoroutine(cmd.Execute(this));
         }
         running = false;
-    SetIdle();
-}
+        nextPatternPossible = Time.time + attackCoolTiem;
+        SetIdle();
+    }
 
 
     public void HitboxOn(int hitboxIndex)
@@ -172,7 +184,14 @@ public class BossTemplate : MonoBehaviour
 
     public void EnterParried()
     {
-        if (routine != null) StopCoroutine(routine);
+        if (routine != null)
+        { 
+            StopCoroutine(routine);
+            routine = null;
+        }
+        running = false;
+        moving = false;
+
         state = BossState.Parried;
         Animator.SetTrigger("Parried");
         IsParried = true;
@@ -180,7 +199,15 @@ public class BossTemplate : MonoBehaviour
 
     public void EnterGroggy()
     {
-        if (routine != null) StopCoroutine(routine);
+        if (routine != null)
+        { 
+            StopCoroutine(routine);
+            routine = null;
+        }
+
+        running = false;
+        moving=false;
+
         state = BossState.Groggy;
         Animator.SetTrigger("Groggy");
         StartCoroutine(Wakeup());
@@ -191,13 +218,16 @@ public class BossTemplate : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         stamina = 100f;
-        state = BossState.Idle;
+        
         Animator.SetBool(WalkParam, false);
         IsParried = false;
         IsGroggy = false;
+
+        nextPatternPossible = Time.time + attackCoolTiem;
+        SetIdle() ;
     }
 
-    Vector3 PlayerPosition()
+    public Vector3 PlayerPosition()
     {
         // change
         return Vector3.zero;
