@@ -4,11 +4,10 @@ using System.Collections;
 public class Player : MonoBehaviour
 { 
     [SerializeField] float hp = 100f;
-    [SerializeField] int level = 1;
-    [SerializeField] GameObject weapon;
+    [SerializeField] int level = 1; // level of Weapon
     [SerializeField] float speed = 4.0f;
     [SerializeField] float jumpForce = 7.5f;
-    [SerializeField] float rollForce = 6.0f;
+    [SerializeField] float rollForce = 9.0f;
     [SerializeField] int jumpCount = 2;
     [SerializeField] LayerMask groundLayer;
 
@@ -26,10 +25,10 @@ public class Player : MonoBehaviour
     private float rollCurrentTime;
     private int currentAttack = 0;
     private float timeSinceAttack = 0.0f;
-    private bool isAttacking = false;
     private float exp = 0f;
     private bool superarmor = false;
     private bool isBlocking = false;
+    private bool isAttackking = false;
     private float delayToIdle = 0.0f;
 
     void Awake()
@@ -79,9 +78,20 @@ public class Player : MonoBehaviour
             superarmor = false;
         }
 
+        // Check for attacking
+        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+        {
+            isAttackking = true;
+        }
+        else
+        {
+            isAttackking = false;
+        }
+
         float inputX = Input.GetAxisRaw("Horizontal");
 
         // Swap direction of sprite depending on walk direction
+        // 1 for right, -1 for left
         if (inputX > 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
@@ -94,17 +104,15 @@ public class Player : MonoBehaviour
             facingDir = -1;
         }
 
-        if (facingDir == -1) weapon.SetActive(false);
-        else weapon.SetActive(true);
-
         // Move player
-        if (isBlocking)
+        if (!rolling)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            if (!isBlocking)
+            {
+                float weight = isAttackking ? 0.05f : 1;
+                rb.linearVelocity = new Vector2(inputX * speed * weight, rb.linearVelocity.y);
+            }
         }
-        else if (!rolling)
-            rb.linearVelocity = new Vector2(inputX * speed, rb.linearVelocity.y);
-
         // Set AirSpeed in animator
         animator.SetFloat("AirSpeedY", rb.linearVelocity.y);
 
@@ -124,6 +132,7 @@ public class Player : MonoBehaviour
         else if (Input.GetMouseButtonDown(0) && timeSinceAttack > 0.25f && !rolling)
         {
             currentAttack++;
+            isAttackking = true;
 
             // Loop back to one after third attack
             if (currentAttack > 3)
@@ -135,14 +144,17 @@ public class Player : MonoBehaviour
 
             // "Attack1" or "Attack2" or "Attack3"
             animator.SetTrigger("Attack" + currentAttack);
+            
 
             // Reset timer
             timeSinceAttack = 0.0f;
+            isAttackking = false;
         }
 
         // Block
         else if (Input.GetMouseButtonDown(1) && !rolling)
         {
+            rb.linearVelocityX *= 0.5f;
             isBlocking = true;
             animator.SetTrigger("Block");
             animator.SetBool("IdleBlock", true);
@@ -160,7 +172,7 @@ public class Player : MonoBehaviour
             rolling = true;
             superarmor = true;
             animator.SetTrigger("Roll");
-            rb.linearVelocity = new Vector2(facingDir * rollForce, rb.linearVelocity.y);
+            rb.linearVelocityX = facingDir * rollForce;
         }
 
         // Jump
@@ -232,7 +244,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (collision.CompareTag("attack") && !superarmor)
+        if (collision.CompareTag("Hit") && !superarmor)
         {
             hp -= 10; // temp value
             animator.SetTrigger("Hurt");
@@ -240,9 +252,9 @@ public class Player : MonoBehaviour
     }
 
     // Get whether player is looking right side
-    public bool isRight()
+    public int isRight()
     {
-        return facingDir == 1 ? true : false;
+        return facingDir;
     }
 
     // get player's current level
@@ -255,5 +267,17 @@ public class Player : MonoBehaviour
     public void addExp(float getExp)
     {
         exp += getExp;
+    }
+
+    // Check if player is able to be attacked
+    // 0: possible, 1: avoid, 2: blocked, 3: parrying
+    public int getStatus()
+    {
+        if (superarmor)
+        {
+            if (isBlocking) return 3;
+            else return 1;
+        } else if (isBlocking) return 2;
+        else return 0;
     }
 }
