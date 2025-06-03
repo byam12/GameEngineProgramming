@@ -24,7 +24,7 @@ public class BossCommand : ScriptableObject, IBossCommand
     public string trigger;
     public int hitboxIndex;
     public UnityEvent onAttackEvent;
-    public List<BossCommand> nextCommands = new List<BossCommand>();
+    public List<IBossCommand> nextCommands = new List<IBossCommand>();
 
     public IEnumerator Execute(BossTemplate boss)
     {
@@ -86,6 +86,8 @@ public class BossTemplate : MonoBehaviour
     public float attackCoolTiem = 2f;
     public float nextPatternPossible = 0f;
 
+    public float cognitionDistance = 3f;
+
     void Awake()
     {
         Animator = GetComponent<Animator>();
@@ -128,7 +130,7 @@ public class BossTemplate : MonoBehaviour
 
     bool isPlayerClose()
     {
-        return Vector3.Distance(transform.position, PlayerPosition()) < 3f;
+        return Vector3.Distance(transform.position, PlayerPosition()) < cognitionDistance;
     }
 
     bool CheckParryInput()

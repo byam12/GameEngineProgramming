@@ -26,17 +26,20 @@ public class HitboxTest : MonoBehaviour
 
     private IEnumerator HitboxSequence()
     {
-        Color startColor = rend.material.color;
+        Color startColor = Color.red;
+        if (rend != null)
+        {  startColor = rend.material.color; }
         float elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             float t = elapsed / fadeDuration;
+            if(rend != null )
             rend.material.color = Color.Lerp(startColor, Color.red, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        rend.material.color = Color.red;
+        if (rend != null)
+        { rend.material.color = Color.red; }
 
         float checkElapsed = 0f;
         while (checkElapsed < checkDuration)
