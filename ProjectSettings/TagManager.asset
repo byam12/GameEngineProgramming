@@ -4,18 +4,15 @@
 TagManager:
   serializedVersion: 3
   tags:
-
-  - Flat
   - Attack
-  - Hit
-
-  - Spike
   - Ladder
+  - Spike
+  - Gate
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
   - 
