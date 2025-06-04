@@ -336,12 +336,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d14461296ddff44b2ce38850bdc0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
-  level: 1
   speed: 4
   jumpForce: 7
-  rollForce: 6
+  rollForce: 8
   jumpCount: 2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
