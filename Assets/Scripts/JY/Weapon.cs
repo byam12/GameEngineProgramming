@@ -6,10 +6,6 @@ using UnityEngine.Rendering;
 public class Weapon : MonoBehaviour
 {
 
-    [SerializeField] WeaponData data;
-    [SerializeField] WeaponData.WeaponType weaponType;
-    [SerializeField] float damage;
-    [SerializeField] WeaponData.Type type;
     [SerializeField] GameObject effect;
     [SerializeField] GameObject attackPoint;
     [SerializeField] GameObject attackArea;
@@ -24,17 +20,11 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        weapon = data.sprite;
         //sr.sprite = weapon;
-        weaponType = data.weaponType;
-        type = data.type;
         //effect = data.effect;
         player = FindAnyObjectByType<Player>();
         level = player.getLevel();
         playerSr = player.gameObject.GetComponent<SpriteRenderer>();
-
-        int idx = data.Damages.Length <= level ? level : data.Damages.Length;
-        damage = data.Damages[idx-1];
 
         height = sr.bounds.size.y;
         attacks[0] = Instantiate(effect);
@@ -95,15 +85,6 @@ public class Weapon : MonoBehaviour
     // Weapon is changed
     public void Change(WeaponData data)
     {
-        weapon = data.sprite;
-        sr.sprite = weapon;
-        weaponType = data.weaponType;
-        type = data.type;
-        effect = data.effect;
-        level = player.getLevel();
-
-        int idx = data.Damages.Length <= level ? level : data.Damages.Length;
-        damage = data.Damages[idx - 1];
 
         height = sr.bounds.size.y;
         attacks[0] = Instantiate(effect);
