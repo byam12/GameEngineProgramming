@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: New Attack Command
+  m_Name: Spell
   m_EditorClassIdentifier: Assembly-CSharp::AttackCommand
-  trigger: 
-  hitAreaObject: {fileID: 0}
+  trigger: Spell
+  hitboxIndex: 0
   onAttackEvent:
     m_PersistentCalls:
       m_Calls: []
-  nextCommands: []
+  nextCommands:
+  - {fileID: 11400000, guid: b50ccd9b0f601254591fe2cb6bb83128, type: 2}
+  - {fileID: 11400000, guid: 00eedc3eaa57f624590bec61953adeb2, type: 2}
