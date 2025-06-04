@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e64c4bfd470369c4280bb01a811f10cb, type: 3}
+  m_Name: example
+  m_EditorClassIdentifier: 
+  weaponType: 0
+  type: 0
+  WeaponName: 
+  desc: 
+  sprite: {fileID: 21300000, guid: 684313b312183104aa93a53f5f9ed7e8, type: 3}
+  Damages:
+  - 5
+  - 10
+  - 15
+  effect: {fileID: 5942177893964023165, guid: 438c0b7b02dcafa4996592b62d22671f, type: 3}

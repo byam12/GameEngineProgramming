@@ -4,6 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
+
+  - Flat
+  - Attack
+  - Hit
+
   - Spike
   - Ladder
   layers:
