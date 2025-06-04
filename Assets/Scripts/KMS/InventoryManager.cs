@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private GameObject equipMentSlot;
     [SerializeField] private GameObject inventory;
     [SerializeField] private Image weaponSlot;
     [SerializeField] private Image shieldSlot;
@@ -25,17 +26,30 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Image amuletSlot4;
     [SerializeField] private Image amuletSlot5;
     [SerializeField] private Image amuletSlot6;
+    public void SetEquipmentSlotActive(bool show)
+    {
+        equipMentSlot.SetActive(show);
+    }
     public void SetInventoryActive(bool show)
     {
         inventory.SetActive(show);
+    }
+    public bool GetEquipmentSlotActive()
+    {
+        return equipMentSlot.activeSelf;
     }
     public bool GetInventoryActive()
     {
         return inventory.activeSelf;
     }
-    public void UpdateUIWearingEquipMents()
+    
+    public void UpdateUIWearingEquipMents() // 착용중인 장비 장비칸에 띄우기
     {
         EquipmentSlotData equipmentSlotData = DataManager.Instance.GetEquipmentSlotData();
-        weaponSlot.sprite = Resources.Load<Sprite>("ItemIcons/"+equipmentSlotData.weapon.spriteCode.ToString("D4"));
+        weaponSlot.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.weapon.spriteCode.ToString("D4"));
+    }
+    public Sprite GetSpriteBySpriteCode(int spriteCode)
+    {
+        return Resources.Load<Sprite>("ItemIcons/"+spriteCode.ToString("D4"));
     }
 }

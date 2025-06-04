@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class InventoryButtonManager : MonoBehaviour
 {
+    [SerializeField] EquipmentButtonManager equipmentButtonManager;
     private Button[] buttons;
 
     void Start()
@@ -15,6 +16,10 @@ public class InventoryButtonManager : MonoBehaviour
             int index = i; // 클로저 문제 방지
             buttons[i].onClick.AddListener(() => OnButtonClicked(index));
         }
+    }
+    public Button[] GetInventoryButtons()
+    {
+        return buttons;
     }
 
     void OnButtonClicked(int buttonIndex)

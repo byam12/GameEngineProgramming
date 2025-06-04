@@ -15,7 +15,6 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private int itemNumber = 1; // 아이템 고유넘버 , 종류 무관 획득순으로 부여 
     private WeaponInventory weaponInventory;
     private EquipmentSlotData equipmentSlotData;
     void Start()
@@ -24,19 +23,6 @@ public class DataManager : MonoBehaviour
     }
     private void JsonFileNullCheck()
     {
-        //아이템 고유넘버 초기화   
-        BasicData basicData = LoadFromJson<BasicData>("BasicData");
-        if (basicData == null)
-        {
-            basicData = new BasicData();
-            basicData.itemNumber = 0;
-            SaveToJson<BasicData>(basicData, "BasicData");
-        }
-        else
-        {
-            itemNumber = basicData.itemNumber;
-        }
-        Debug.Log("ItemNumber is " + itemNumber);
         //무기 인벤  
         weaponInventory = LoadFromJson<WeaponInventory>("WeaponInventory");
         if (weaponInventory == null)
@@ -51,14 +37,9 @@ public class DataManager : MonoBehaviour
             SaveToJson<EquipmentSlotData>(equipmentSlotData, "EquipmentSlotData");
         }
     }
-    public int[] GetWeaponInventoryItemNumber()
+    public WeaponInventory GetWeaponInventory()
     {
-        int count = weaponInventory.weapons.Count;
-        int[] itemNumbers = new int[count];
-        for (int i = 0; i < count; i++){
-            itemNumbers[i] = weaponInventory.weapons[i].itemNumber;
-        }
-        return itemNumbers;
+        return weaponInventory;
     }
     public void WearEquipment(WeaponData weapon)//장비착용 메소드, 오버로드해서 사용
     {
@@ -72,16 +53,8 @@ public class DataManager : MonoBehaviour
     public void AddWeapon(WeaponData weaponData)//무기획득 메소드
     {
         weaponInventory.weapons.Add(weaponData);
-        CountItemNumber();
     }
-    public void CountItemNumber()//장비 고유넘버 + 1
-    {
-        itemNumber++;
-        BasicData basicData = LoadFromJson<BasicData>("BasicData");
-        basicData.itemNumber = itemNumber;
-        SaveToJson<BasicData>(basicData, "BasicData");
-        Debug.Log("ItemNumber is " + itemNumber);
-    }
+    
 
     public static void SaveToJson<T>(T data, string fileName)
     {

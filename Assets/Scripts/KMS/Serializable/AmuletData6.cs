@@ -1,13 +1,13 @@
 using UnityEngine;
 [System.Serializable]
-public class WeaponData
+public class AmuletData6
 {
     public int spriteCode;
     public string itemName;
     public int itemRarity;
     public int enhancementLevel;
     public string statBonusTypes;
-    public WeaponData(int spriteCode,
+    public AmuletData6(int spriteCode,
     string itemName, int itemRarity,
     int enhancementLevel, string statBonusTypes)
     {
