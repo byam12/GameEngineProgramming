@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Weapon : MonoBehaviour
 {
@@ -12,10 +13,14 @@ public class Weapon : MonoBehaviour
     SpriteRenderer sr;
     [SerializeField]Sprite weapon; //inventory
     [SerializeField] int level; //inventory
+    [SerializeField] GameObject skill; //inventory
     Player player;
     SpriteRenderer playerSr;
     GameObject[] attacks = new GameObject[3];
     float height;
+    private bool extra = false;
+    private float extraCurrentTime;
+    private float extraDuration = 1.5f;
 
     private void Awake()
     {
@@ -32,6 +37,22 @@ public class Weapon : MonoBehaviour
         attacks[1].SetActive(false);
         attacks[2] = Instantiate(effect);
         attacks[2].SetActive(false);
+    }
+
+    private void Update()
+    {
+
+        // Timer for checking skill duration
+        if (extra)
+        {
+            extraCurrentTime += Time.deltaTime;
+        }
+
+        if (extraCurrentTime > extraDuration)
+        {
+            extra = false;
+            extraCurrentTime = 0;
+        }
     }
 
     private void LateUpdate()
@@ -61,7 +82,7 @@ public class Weapon : MonoBehaviour
         else sr.flipX = player.isRight() == 1 ? true : false;
 
         // attacked / rolling motion
-        if (index == 45 || index == 48 || (index >= 71 && index <= 78))
+        if (index == 45 || index == 48 || (index >= 71 && index <= 78) || index >= 90)
         {
             sr.enabled = false;
         }
@@ -77,6 +98,11 @@ public class Weapon : MonoBehaviour
         } else if (index == 32)
         {
             Attack(2);
+        } else if (index == 92 && !extra)
+        {
+            extra = true;
+            GameObject go = skill != null ? skill : player.basicSkill;
+            Instantiate(go, attackPoint.transform.position + Vector3.right * player.isRight(), Quaternion.Euler(0, player.isRight() == 1 ? 180 : 0, 0));
         }
 
     }
