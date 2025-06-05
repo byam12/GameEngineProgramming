@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Player : MonoBehaviour
     [SerializeField] float rollForce = 9.0f;
     [SerializeField] int jumpCount = 2;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private Image manaBar;
+    public GameObject basicSkill;
 
 
     private Animator animator;
@@ -15,6 +19,7 @@ public class Player : MonoBehaviour
     private Collider2D cd;
 
     private int facingDir = 1;
+    private bool dead = false;
     private bool grounded = false;
     private Collider2D floor;
     private int jumped = 0;
@@ -23,17 +28,33 @@ public class Player : MonoBehaviour
     private float rollCurrentTime;
     private int currentAttack = 0;
     private float timeSinceAttack = 0.0f;
+    private bool extra = false;
+    private float extraCurrentTime;
     private bool superarmor = false;
     private bool isBlocking = false;
     private bool isAttackking = false;
     private float delayToIdle = 0.0f;
     private bool isGate = false;
+    private bool isNPC = false;
+    private bool isItem = false;
+    
+
+    //temp values
+    private float maxHP = 100;
+    private float hp = 100;
+    private float maxMP = 100;
+    private float mp = 100;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<Collider2D>();
+        healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+        manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
+        //temp code
+        UpdateHP(hp, maxHP);
+        UpdateMP(mp, maxMP);
     }
 
     void Update()
@@ -52,79 +73,110 @@ public class Player : MonoBehaviour
             rollCurrentTime = 0;
         }
 
-        // Check if player is falling
-        if (!grounded)
+        // Timer for checking skill duration
+        if (extra)
         {
-            animator.SetBool("Grounded", grounded);
+            extraCurrentTime += Time.deltaTime;
         }
 
-        // Check for perfect block or roll or hurt
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Block") || animator.GetCurrentAnimatorStateInfo(0).IsName("Roll") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
+        if ( extraCurrentTime > 1.5f)
         {
-            superarmor = true;
-        }
-        else
-        {
-            superarmor = false;
+            extra = false;
+            extraCurrentTime = 0;
         }
 
-        // Check for attacking
-        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+        // Death
+        if (hp == 0 && !dead) //temp condition
         {
-            isAttackking = true;
-        }
-        else
-        {
-            isAttackking = false;
-        }
+            dead = true;
+            animator.SetTrigger("Death");
 
-        float inputX = Input.GetAxisRaw("Horizontal");
-
-        // Swap direction of sprite depending on walk direction
-        // 1 for right, -1 for left
-        if (inputX > 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = false;
-            facingDir = 1;
+            // Need logic for game end!!
+            StartCoroutine("Return");
         }
-
-        else if (inputX < 0)
+        else if (!dead)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
-            facingDir = -1;
-        }
 
-        // Move player
-        if (!rolling)
-        {
-            if (!isBlocking)
+            // Check if player is falling
+            if (!grounded)
             {
-                float weight = isAttackking ? 0.05f : 1;
-                rb.linearVelocity = new Vector2(inputX * speed * weight, rb.linearVelocity.y);
+                animator.SetBool("Grounded", grounded);
             }
-        }
-        // Set AirSpeed in animator
-        animator.SetFloat("AirSpeedY", rb.linearVelocity.y);
 
-        // Go down when player is on 'Flat' floor
-        if (Input.GetKeyDown("s") && grounded) StartCoroutine("FallThroughPlatform");
-
-        // Go through the 'Gate'
-        if (Input.GetKeyDown("w")) Debug.Log("enter"); //temp code
-
-        // Open the Inventory
-        if (Input.GetKeyDown("i")) { Debug.Log("gate opens"); } //temp code
-
-            // Death
-            if (false) //temp condition
+            // Check for perfect block or roll or hurt
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Block") || animator.GetCurrentAnimatorStateInfo(0).IsName("Roll") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
             {
-                animator.SetTrigger("Death");
+                superarmor = true;
+            }
+            else
+            {
+                superarmor = false;
+            }
 
-                // Need logic for game end!!
+            // Check for attacking
+            if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+            {
+                isAttackking = true;
+            }
+            else
+            {
+                isAttackking = false;
+            }
+
+            float inputX = Input.GetAxisRaw("Horizontal");
+
+            // Swap direction of sprite depending on walk direction
+            // 1 for right, -1 for left
+            if (inputX > 0)
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+                facingDir = 1;
+            }
+
+            else if (inputX < 0)
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+                facingDir = -1;
+            }
+
+            // Move player
+            if (!rolling)
+            {
+                if (!isBlocking)
+                {
+                    float weight = isAttackking ? 0.05f : 1;
+                    rb.linearVelocity = new Vector2(inputX * speed * weight, rb.linearVelocity.y);
+                }
+            }
+            // Set AirSpeed in animator
+            animator.SetFloat("AirSpeedY", rb.linearVelocity.y);
+
+            // Go down when player is on 'Flat' floor
+            if (Input.GetKeyDown("s") && grounded) StartCoroutine("FallThroughPlatform");
+
+            // Go through the 'Gate'
+            if (Input.GetKeyDown("w") && isGate) Debug.Log("enter"); //temp code
+
+            // Open the Inventory
+            if (Input.GetKeyDown("i")) { Debug.Log("gate opens"); } //temp code
+
+            // Interact with NPC or item
+            if (Input.GetKeyDown("f"))
+            {
+                if (isNPC)
+                {
+                    //Need to add
+                    Debug.Log("NPC");
+                }
+                else if (isItem)
+                {
+                    //Need to add
+                    Debug.Log("item");
+                }
             }
 
             // Attack
-            else if (Input.GetMouseButtonDown(0) && timeSinceAttack > 0.25f && !rolling)
+            if (Input.GetMouseButtonDown(0) && timeSinceAttack > 0.25f && !rolling)
             {
                 currentAttack++;
                 isAttackking = true;
@@ -144,6 +196,16 @@ public class Player : MonoBehaviour
                 // Reset timer
                 timeSinceAttack = 0.0f;
                 isAttackking = false;
+            }
+
+            // Use skill
+            else if (Input.GetKeyDown("e") && !extra)
+            {
+                animator.SetTrigger("AttackExtra");
+                extra = true;
+
+                //temp code;
+                UpdateMP(mp -= 5, maxMP);
             }
 
             // Block
@@ -197,6 +259,7 @@ public class Player : MonoBehaviour
                 if (delayToIdle < 0)
                     animator.SetInteger("AnimState", 0);
             }
+        }
     }
 
     // To go down, ignore collision beween player and 'Flat' floor for 0.5s
@@ -205,6 +268,22 @@ public class Player : MonoBehaviour
         Physics2D.IgnoreCollision(cd, floor, true);
         yield return new WaitForSeconds(0.6f);
         Physics2D.IgnoreCollision(cd, floor, false);
+    }
+
+    // Return to town
+    IEnumerator Return()
+    {
+        yield return new WaitForSeconds(3f);
+        dead = false;
+        animator.SetTrigger("Revive");
+        UpdateHP(hp = maxHP, maxHP);
+        UpdateMP(mp = maxMP, maxMP);
+        //do something
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
     }
 
     // Check if player is on the ground
@@ -233,35 +312,36 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Hurt
-    // Check if attacked by monsters or spike
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Hit") && !superarmor)
+        if (collision.CompareTag("Hit") && !superarmor && !dead)  // Hurt: Check if attacked by monsters
         {
             hurt(10); //temp damage value
             animator.SetTrigger("Hurt");
         }
-        else if (collision.CompareTag("Gate"))
+        else if (collision.CompareTag("Spike") && !superarmor && !dead)  // Hurt: Check if attacked by spikes
+        {
+            hurt(5);
+            jumped = jumpCount;
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce * 0.75f);
+            grounded = false;
+            animator.SetTrigger("Hurt");
+        } 
+        else if (collision.CompareTag("Gate")) // Check for gate, npc, item
         {
             isGate = true;
         }
-
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Spike") && !superarmor)
+        else if (collision.CompareTag("NPC"))
         {
-            hurt(5);
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 0.65f);
-            grounded = false;
-            animator.SetTrigger("Hurt");
+            isNPC = true;
         }
-    }
+        else if (collision.CompareTag("Item"))
+        {
+            isItem = true;
+        }
 
-    // Check if player is in front of the gate
+    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -269,7 +349,48 @@ public class Player : MonoBehaviour
         {
             isGate = false;
         }
+        else if (collision.CompareTag("NPC"))
+        {
+            isNPC = false;
+        }
+        else if (collision.CompareTag("Item"))
+        {
+            isItem = false;
+        }
 
+    }
+
+    // Update health_bar
+    private void UpdateHP(float current, float max)
+    {
+        if (dead) return;
+
+        float ratio;
+
+        if (current <= 0 && !dead)
+        {
+            //current = 0;
+            hp = 0;
+            current = hp;
+
+        }
+        ratio = current / max;
+
+        healthBar.rectTransform.localPosition = new Vector3(healthBar.rectTransform.rect.width * ratio - healthBar.rectTransform.rect.width, 0, 0);
+    }
+
+    // Update mana_bar
+    private void UpdateMP(float current, float max)
+    {
+        float ratio;
+
+        if (current <= 0)
+        {
+            ratio = 0;
+        }
+        else ratio = current / max;
+
+        manaBar.rectTransform.localPosition = new Vector3(manaBar.rectTransform.rect.width * ratio - manaBar.rectTransform.rect.width, 0, 0);
     }
 
     // Get whether player is looking right side
@@ -282,6 +403,7 @@ public class Player : MonoBehaviour
     public void hurt(float damage)
     {
         // Need to add!!
+        UpdateHP(hp -= damage, maxMP);
     }
 
     // Check if player is able to be attacked
@@ -296,4 +418,5 @@ public class Player : MonoBehaviour
         else if (isBlocking) return 2;
         else return 0;
     }
+
 }

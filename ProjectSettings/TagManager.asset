@@ -10,6 +10,8 @@ TagManager:
   - Gate
   - Flat
   - Hit
+  - NPC
+  - Item
   layers:
   - Default
   - TransparentFX
