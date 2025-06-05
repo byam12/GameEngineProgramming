@@ -835,7 +835,35 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_FX_Dash_Front_0: -7110016099071530613
+      Zweihander_FX_Dash_Front_1: -3034112885045398630
+      Zweihander_FX_Dash_Front_10: 2974836788939591035
+      Zweihander_FX_Dash_Front_11: 1640040367015957212
+      Zweihander_FX_Dash_Front_12: -1451672453559826345
+      Zweihander_FX_Dash_Front_13: -5153003923222857818
+      Zweihander_FX_Dash_Front_14: -1732082067512965401
+      Zweihander_FX_Dash_Front_15: 847907225570972117
+      Zweihander_FX_Dash_Front_16: -222999700805755827
+      Zweihander_FX_Dash_Front_17: 8998636479285233137
+      Zweihander_FX_Dash_Front_18: -5023638753247659938
+      Zweihander_FX_Dash_Front_19: 4994336413261838888
+      Zweihander_FX_Dash_Front_2: 7481861573935997797
+      Zweihander_FX_Dash_Front_20: -5044076262484983756
+      Zweihander_FX_Dash_Front_21: -6199262129371044477
+      Zweihander_FX_Dash_Front_22: -1343968154622854682
+      Zweihander_FX_Dash_Front_23: -1188837617106090367
+      Zweihander_FX_Dash_Front_24: -4281549290539950264
+      Zweihander_FX_Dash_Front_25: 3561532057091905838
+      Zweihander_FX_Dash_Front_26: -2702961970326792477
+      Zweihander_FX_Dash_Front_27: -2596658896520307336
+      Zweihander_FX_Dash_Front_3: -6641730192669036397
+      Zweihander_FX_Dash_Front_4: -1811363330362777811
+      Zweihander_FX_Dash_Front_5: 6529348757282464532
+      Zweihander_FX_Dash_Front_6: 9212736724643434975
+      Zweihander_FX_Dash_Front_7: -6485952765609023837
+      Zweihander_FX_Dash_Front_8: -372695903538514061
+      Zweihander_FX_Dash_Front_9: 6740267029712343840
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

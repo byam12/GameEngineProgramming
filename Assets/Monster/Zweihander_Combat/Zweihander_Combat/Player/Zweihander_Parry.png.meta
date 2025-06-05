@@ -360,7 +360,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_Parry_0: 425027931683432827
+      Zweihander_Parry_1: 5592749721682973864
+      Zweihander_Parry_2: -8691706651468191065
+      Zweihander_Parry_3: -4568638922402551657
+      Zweihander_Parry_4: -6495449024221193647
+      Zweihander_Parry_5: -4505817878493176854
+      Zweihander_Parry_6: -360567927252101347
+      Zweihander_Parry_7: -4518867812907365924
+      Zweihander_Parry_8: -8738913250166210843
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

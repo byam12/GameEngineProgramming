@@ -590,7 +590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &122248563
 Animator:
   serializedVersion: 7
@@ -1665,7 +1665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &793029588
 Animator:
   serializedVersion: 7
@@ -1776,7 +1776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &807707904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1886,6 +1886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialCommands:
   - {fileID: 11400000, guid: 0897db0ff755cfb488d70bb86491888c, type: 2}
+  - {fileID: 11400000, guid: 754cae9a31b822e43bc8ea98fad96afe, type: 2}
   Animator: {fileID: 807707906}
   stamina: 100
   groggyThreshold: 0
@@ -2445,7 +2446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1284967470
 Animator:
   serializedVersion: 7
@@ -3161,7 +3162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1674378904
 Animator:
   serializedVersion: 7
@@ -3322,7 +3323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1942737219
 Animator:
   serializedVersion: 7
@@ -3432,7 +3433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &2046009951
 Animator:
   serializedVersion: 7
