@@ -4,13 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
-
-  - Flat
   - Attack
-  - Hit
-
-  - Spike
   - Ladder
+  - Spike
+  - Gate
+  - Flat
+  - Hit
   layers:
   - Default
   - TransparentFX

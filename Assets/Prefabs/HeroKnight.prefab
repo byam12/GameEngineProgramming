@@ -100,10 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14dad640086fa2a46911b21ee92cfe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: db8014fac2c7d3b49aebfdc75c316aae, type: 2}
-  weaponType: 0
-  damage: 10
-  type: 2
   effect: {fileID: 5942177893964023165, guid: 438c0b7b02dcafa4996592b62d22671f, type: 3}
   attackPoint: {fileID: 3815115323475796456}
   attackArea: {fileID: 5847351848134016636, guid: 799b014e5b3a2d14fa10f33260229b1c, type: 3}
@@ -340,11 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d14461296ddff44b2ce38850bdc0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
-  level: 1
   speed: 4
   jumpForce: 7
-  rollForce: 6
+  rollForce: 8
   jumpCount: 2
   groundLayer:
     serializedVersion: 2

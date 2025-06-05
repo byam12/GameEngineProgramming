@@ -6,12 +6,12 @@ using UnityEngine.Rendering;
 public class Weapon : MonoBehaviour
 {
 
-    [SerializeField] GameObject effect;
+    [SerializeField] GameObject effect; //inventory
     [SerializeField] GameObject attackPoint;
     [SerializeField] GameObject attackArea;
     SpriteRenderer sr;
-    [SerializeField]Sprite weapon;
-    [SerializeField] int level;
+    [SerializeField]Sprite weapon; //inventory
+    [SerializeField] int level; //inventory
     Player player;
     SpriteRenderer playerSr;
     GameObject[] attacks = new GameObject[3];
@@ -23,7 +23,6 @@ public class Weapon : MonoBehaviour
         //sr.sprite = weapon;
         //effect = data.effect;
         player = FindAnyObjectByType<Player>();
-        level = player.getLevel();
         playerSr = player.gameObject.GetComponent<SpriteRenderer>();
 
         height = sr.bounds.size.y;
