@@ -4,14 +4,13 @@ using UnityEngine.UI;
 
 public class EquipmentButtonManager : MonoBehaviour
 {
-    private InventoryButtonManager inventoryButtonManager;
+    [SerializeField] private InventoryButtonManager inventoryButtonManager;
     private Button[] buttons;
 
     void Start()
     {
         // 이 스크립트가 붙은 오브젝트 자식들 중 Button 컴포넌트 다 가져오기
         buttons = GetComponentsInChildren<Button>();
-        inventoryButtonManager = InventoryButtonManager.Instance;
         for (int i = 0; i < buttons.Length; i++)
         {
             int index = i; // 클로저 문제 방지
@@ -27,8 +26,10 @@ public class EquipmentButtonManager : MonoBehaviour
         InventoryManager.Instance.SetItemInfoPanel(false);
         InventoryManager.Instance.SetInventoryActive(false);
         InventoryManager.Instance.SetCraftingPanel(false);
+        InventoryManager.Instance.SetEquipmentSlotActive(true);
+        InventoryManager.Instance.SetInventoryActive(true);
         Debug.Log("클릭한 버튼 번호는 " + buttonIndex);
-        InventoryButtonManager.Instance.currentOpenedInventoryNumber = buttonIndex;
+        GameManager.Instance.currentOpenedInventoryNumber = buttonIndex;
         Button[] invenButtons = inventoryButtonManager.GetInventoryButtons();
         switch (buttonIndex)
         {

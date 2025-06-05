@@ -3,6 +3,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public object currentSelectItem;
+    public int currentOpenedInventoryNumber = -1;
     void Awake()
     {
         if (Instance == null)

@@ -212,26 +212,34 @@ public class DataManager : MonoBehaviour
     public void AddAmulet1(AmuletData1 amuletData1)//장신구획득 메소드
     {
         amuletInventory1.amulets1.Add(amuletData1);
+        SaveToJson<AmuletInventory1>(amuletInventory1, "AmuletInventory1");
     }
     public void AddAmulet2(AmuletData2 amuletData2)//장신구획득 메소드
     {
         amuletInventory2.amulets2.Add(amuletData2);
+        SaveToJson<AmuletInventory2>(amuletInventory2, "AmuletInventory2");
     }
+    
     public void AddAmulet3(AmuletData3 amuletData3)//장신구획득 메소드
     {
         amuletInventory3.amulets3.Add(amuletData3);
+        SaveToJson<AmuletInventory3>(amuletInventory3, "AmuletInventory3");
     }
+    
     public void AddAmulet4(AmuletData4 amuletData4)//장신구획득 메소드
     {
         amuletInventory4.amulets4.Add(amuletData4);
+        SaveToJson<AmuletInventory4>(amuletInventory4, "AmuletInventory4");
     }
     public void AddAmulet5(AmuletData5 amuletData5)//장신구획득 메소드
     {
         amuletInventory5.amulets5.Add(amuletData5);
+        SaveToJson<AmuletInventory5>(amuletInventory5, "AmuletInventory5");
     }
     public void AddAmulet6(AmuletData6 amuletData6)//장신구획득 메소드
     {
         amuletInventory6.amulets6.Add(amuletData6);
+        SaveToJson<AmuletInventory6>(amuletInventory6, "AmuletInventory6");
     }
 
     public static void SaveToJson<T>(T data, string fileName)

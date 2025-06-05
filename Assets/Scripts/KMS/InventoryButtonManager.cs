@@ -5,23 +5,9 @@ using UnityEngine.UI;
 public class InventoryButtonManager : MonoBehaviour
 {
     public static InventoryButtonManager Instance { get; private set; }
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     //[SerializeField] EquipmentButtonManager equipmentButtonManager;
     
     private Button[] buttons;
-    private object currentSelectItem;
-    public int currentOpenedInventoryNumber = -1;
     void Start()
     {
         // 이 스크립트가 붙은 오브젝트 자식들 중 Button 컴포넌트 다 가져오기
@@ -41,46 +27,47 @@ public class InventoryButtonManager : MonoBehaviour
     void OnButtonClicked(int buttonIndex)
     {
         InventoryManager.Instance.SetItemInfoPanel(true);
-
-        switch (currentOpenedInventoryNumber)
+        InventoryManager.Instance.SetSelectedPartItemInfoPanel(false);
+        switch (GameManager.Instance.currentOpenedInventoryNumber)
         {
             case 0:
                 AmuletInventory1 amuletInventory1 = DataManager.Instance.GetAmuletInventory1();
-                currentSelectItem = amuletInventory1.amulets1[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory1.amulets1[buttonIndex];
                 break;
             case 1:
                 AmuletInventory2 amuletInventory2 = DataManager.Instance.GetAmuletInventory2();
-                currentSelectItem = amuletInventory2.amulets2[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory2.amulets2[buttonIndex];
                 break;
             case 2:
                 AmuletInventory3 amuletInventory3 = DataManager.Instance.GetAmuletInventory3();
-                currentSelectItem = amuletInventory3.amulets3[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory3.amulets3[buttonIndex];
                 break;
             case 3:
                 AmuletInventory4 amuletInventory4 = DataManager.Instance.GetAmuletInventory4();
-                currentSelectItem = amuletInventory4.amulets4[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory4.amulets4[buttonIndex];
                 break;
             case 4:
                 AmuletInventory5 amuletInventory5 = DataManager.Instance.GetAmuletInventory5();
-                currentSelectItem = amuletInventory5.amulets5[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory5.amulets5[buttonIndex];
                 break;
             case 5:
                 AmuletInventory6 amuletInventory6 = DataManager.Instance.GetAmuletInventory6();
-                currentSelectItem = amuletInventory6.amulets6[buttonIndex];
+                GameManager.Instance.currentSelectItem = amuletInventory6.amulets6[buttonIndex];
                 break;
             case 6:
                 WeaponInventory weaponInventory = DataManager.Instance.GetWeaponInventory();
-                currentSelectItem = weaponInventory.weapons[buttonIndex];
+                GameManager.Instance.currentSelectItem = weaponInventory.weapons[buttonIndex];
                 break;
             case 7:
                 ShieldInventory shieldInventory = DataManager.Instance.GetShieldInventory();
-                currentSelectItem = shieldInventory.shields[buttonIndex];
+                GameManager.Instance.currentSelectItem = shieldInventory.shields[buttonIndex];
                 break;
         }
     }
     public void EquipItem()
     {
-        switch (currentOpenedInventoryNumber)
+        object currentSelectItem = GameManager.Instance.currentSelectItem;
+        switch (GameManager.Instance.currentOpenedInventoryNumber)
         {
             case 0:
                 DataManager.Instance.WearEquipment((AmuletData1)currentSelectItem);
@@ -107,11 +94,11 @@ public class InventoryButtonManager : MonoBehaviour
                 DataManager.Instance.WearEquipment((ShieldData)currentSelectItem);
                 break;
         }
-        InventoryManager.Instance.EquipmentSlotSpriteUpdate(currentOpenedInventoryNumber);
+        InventoryManager.Instance.EquipmentSlotSpriteUpdate(GameManager.Instance.currentOpenedInventoryNumber);
     }
     public void UnEquipItem()
     {
-        DataManager.Instance.UnWearEquipment(currentOpenedInventoryNumber);
-        InventoryManager.Instance.EquipmentSlotSpriteUpdate(currentOpenedInventoryNumber);
+        DataManager.Instance.UnWearEquipment(GameManager.Instance.currentOpenedInventoryNumber);
+        InventoryManager.Instance.EquipmentSlotSpriteUpdate(GameManager.Instance.currentOpenedInventoryNumber);
     }
 }

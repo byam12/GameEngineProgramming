@@ -1,5 +1,7 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
@@ -15,11 +17,13 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    [SerializeField] private ItemDataStorage itemDataStorage;
     [SerializeField] private GameObject equipMentSlot;
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject itemInfoPanel;
     [SerializeField] private GameObject craftingPanel;
+    [SerializeField] private Image selectedPartItem;
+    [SerializeField] private GameObject selectedPartItemInfoPanel;
     [SerializeField] private Image weaponSlot;
     [SerializeField] private Image shieldSlot;
     [SerializeField] private Image amuletSlot1;
@@ -57,19 +61,26 @@ public class InventoryManager : MonoBehaviour
     public bool GetInventoryActive()
     {
         return inventory.activeSelf;
+    }   
+    public void SetSelectedPartItemInfoPanel(bool show)
+    {
+        selectedPartItemInfoPanel.SetActive(show);
     }
-
+    public void SetSselectedPartItemImage(Image sprite)
+    {
+        selectedPartItem.sprite = sprite.sprite;
+    }
     public void UpdateUIWearingEquipMents() // 착용중인 장비 장비칸에 띄우기
     {
         EquipmentSlotData equipmentSlotData = DataManager.Instance.GetEquipmentSlotData();
-        weaponSlot.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.weapon.spriteCode.ToString("D4"));
-        shieldSlot.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.shield.spriteCode.ToString("D4"));
-        amuletSlot1.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet1.spriteCode.ToString("D4"));
-        amuletSlot2.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet2.spriteCode.ToString("D4"));
-        amuletSlot3.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet3.spriteCode.ToString("D4"));
-        amuletSlot4.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet4.spriteCode.ToString("D4"));
-        amuletSlot5.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet5.spriteCode.ToString("D4"));
-        amuletSlot6.sprite = Resources.Load<Sprite>("ItemIcons/" + equipmentSlotData.amulet6.spriteCode.ToString("D4"));
+        EquipmentSlotSpriteUpdate(0);
+        EquipmentSlotSpriteUpdate(1);
+        EquipmentSlotSpriteUpdate(2);
+        EquipmentSlotSpriteUpdate(3);
+        EquipmentSlotSpriteUpdate(4);
+        EquipmentSlotSpriteUpdate(5);
+        EquipmentSlotSpriteUpdate(6);
+        EquipmentSlotSpriteUpdate(7);
     }
     public void EquipmentSlotSpriteUpdate(int slotNumber)
     {
@@ -124,31 +135,69 @@ public class InventoryManager : MonoBehaviour
         craftingSetSlot5.sprite = Resources.Load<Sprite>("ItemIcons/" + (5000 + setNumber).ToString("D4"));
         craftingSetSlot6.sprite = Resources.Load<Sprite>("ItemIcons/" + (6000 + setNumber).ToString("D4"));
     }
-    // public void CraftSelectedItem(Button selectiedItem)
-    // {
-    //     int partNumber = int.Parse(selectiedItem.image.sprite.name.Substring(0, 1));
-    //     int setNumber = int.Parse(selectiedItem.image.sprite.name.Substring(1, 3));
-    //     switch (partNumber - 1)
-    //     {
-    //         case 0:
-    //             Crafter(partNumber, setNumber);
-    //             break;
-    //     }
-    // }
-    // private object Crafter(int partNumber, int setNumber)
-    // {
-    //     switch (setNumber)
-    //     {
-    //         case 0:
-    //             return CraftItem(partNumber);
-    //         case 1:
-    //             return CraftItem(partNumber);
-    //     }
-    // }
-    // private object CraftItem(int partNumber)
-    // {
-    
-    //     return partNumber;
-    // }
-    
+    public void CraftSelectedItem(Image selectiedItem)
+    {
+        int spriteCode = int.Parse(selectiedItem.sprite.name);
+        int partNumber = int.Parse(selectiedItem.sprite.name.Substring(0, 1));
+        switch (partNumber - 1)
+        {
+            case 0:
+                CreateEquipment1(spriteCode);
+                break;
+        }
+    }
+    private void CreateEquipment1(int spriteCode)
+    {
+        itemDataStorage.SetDataBySpriteCode(spriteCode);
+        List<int> numbers = GetUniqueRandomNumbers();
+
+        DataManager.Instance.AddAmulet1(
+            new AmuletData1(spriteCode, itemDataStorage.itemName, 0, itemDataStorage.statBonusType,
+        GetSubStatType(numbers[0]), GetSubStatType(numbers[1]), GetSubStatType(numbers[2]), GetSubStatType(numbers[3])));
+    }
+    private List<int> GetUniqueRandomNumbers()
+    {
+        List<int> numbers = new List<int>();
+        for (int i = 1; i <= 9; i++)
+        {
+            numbers.Add(i);
+        }
+
+        List<int> result = new List<int>();
+        while (result.Count < 4)
+        {
+            int index = UnityEngine.Random.Range(0, numbers.Count);
+            result.Add(numbers[index]);
+            numbers.RemoveAt(index);
+        }
+
+        return result;
+    }
+    private string GetSubStatType(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                return "공격력";
+            case 2:
+                return "방어력";
+            case 3:
+                return "체력";
+            case 4:
+                return "공격력%";
+            case 5:
+                return "방어력%";
+            case 6:
+                return "체력%";
+            case 7:
+                return "치명타확률";
+            case 8:
+                return "치명타피해";
+            case 9:
+                return "관통";
+            default:
+                Debug.Log("오류");
+                return "";
+        }        
+    }
 }
