@@ -11,7 +11,7 @@ public class InventoryButtonManager : MonoBehaviour
 
     private Button[] buttons;
     private int latestIndex=-1;
-    void Start()
+    void Awake()
     {
         // 이 스크립트가 붙은 오브젝트 자식들 중 Button 컴포넌트 다 가져오기
         buttons = GetComponentsInChildren<Button>();
@@ -27,7 +27,7 @@ public class InventoryButtonManager : MonoBehaviour
         return buttons;
     }
 
-    void OnButtonClicked(int buttonIndex)
+    public void OnButtonClicked(int buttonIndex)
     {
         InventoryManager.Instance.SetSelectedPartItemInfoPanel(false);
         bool isEquip = false;
@@ -113,46 +113,64 @@ public class InventoryButtonManager : MonoBehaviour
         {
             case 0:
                 ((AmuletData1)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory1().amulets1[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData1)currentSelectItem);
                 break;
             case 1:
                 ((AmuletData2)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory2().amulets2[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData2)currentSelectItem);
                 break;
             case 2:
                 ((AmuletData3)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory3().amulets3[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData3)currentSelectItem);
                 break;
             case 3:
                 ((AmuletData4)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory4().amulets4[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData4)currentSelectItem);
                 break;
             case 4:
                 ((AmuletData5)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory5().amulets5[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData5)currentSelectItem);
                 break;
             case 5:
                 ((AmuletData6)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetAmuletInventory6().amulets6[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((AmuletData6)currentSelectItem);
                 break;
             case 6:
                 ((WeaponData)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetWeaponInventory().weapons[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((WeaponData)currentSelectItem);
                 break;
             case 7:
                 ((ShieldData)currentSelectItem).isEquiped = true;
+                DataManager.Instance.GetShieldInventory().shields[latestIndex].isEquiped = true;
+                DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber+1);
                 DataManager.Instance.WearEquipment((ShieldData)currentSelectItem);
                 break;
         }
         InventoryManager.Instance.EquipmentSlotSpriteUpdate(GameManager.Instance.currentOpenedInventoryNumber);
         equipmentButtonManager.OnButtonClicked(GameManager.Instance.currentOpenedInventoryNumber);
         OnButtonClicked(FindEquipedItemIndex());
+        PlayerParametersDefault.Instance.UpdatePayerDefaultParameters();
     }
     public void UnEquipItem()
     {
         DataManager.Instance.UnWearEquipment(GameManager.Instance.currentOpenedInventoryNumber);
         InventoryManager.Instance.EquipmentSlotSpriteUpdate(GameManager.Instance.currentOpenedInventoryNumber);
         equipmentButtonManager.OnButtonClicked(GameManager.Instance.currentOpenedInventoryNumber);
+        PlayerParametersDefault.Instance.UpdatePayerDefaultParameters();
     }
     private int FindEquipedItemIndex()
     {
@@ -259,7 +277,7 @@ public class InventoryButtonManager : MonoBehaviour
                 }
                 break;
             case 2:
-                AmuletData1 amuletData3 = (AmuletData1)currentSelectItem;
+                AmuletData3 amuletData3 = (AmuletData3)currentSelectItem;
                 if (amuletData3.enhancementLevel < 15)
                 {
                     amuletData3.enhancementLevel++;
@@ -361,6 +379,7 @@ public class InventoryButtonManager : MonoBehaviour
         }
         DataManager.Instance.SaveInventory(GameManager.Instance.currentOpenedInventoryNumber + 1);
         OnButtonClicked(latestIndex);
+        PlayerParametersDefault.Instance.UpdatePayerDefaultParameters();
     }
     private string UpgradeSubStat(string substat)
     {

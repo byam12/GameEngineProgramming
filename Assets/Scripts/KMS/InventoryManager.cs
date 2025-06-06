@@ -180,8 +180,8 @@ public class InventoryManager : MonoBehaviour
                 WeaponData weapon = (WeaponData)GameManager.Instance.currentSelectItem;
                 selectedItemImage.sprite = Resources.Load<Sprite>("ItemIcons/" + weapon.spriteCode.ToString("D4"));
                 itemDataStorage.SetDataBySpriteCode(weapon.spriteCode);
-                explanation.text = itemDataStorage.explanation;
-                itemName.text = weapon.itemName + " " + weapon.itemRarity + " Lv." + weapon.enhancementLevel + "/15";
+                explanation.text = "";
+                itemName.text = weapon.itemName + " " + weapon.itemRarity + " Lv." + weapon.enhancementLevel + "/60";
                 mainStat.text = weapon.statBonusTypes + " " + CalculateMainStat(weapon.statBonusTypes, weapon.enhancementLevel).ToString("F1");
                 subStat1.text = itemDataStorage.explanation;
                 subStat2.text = "";
@@ -193,8 +193,8 @@ public class InventoryManager : MonoBehaviour
                 ShieldData shield = (ShieldData)GameManager.Instance.currentSelectItem;
                 selectedItemImage.sprite = Resources.Load<Sprite>("ItemIcons/" + shield.spriteCode.ToString("D4"));
                 itemDataStorage.SetDataBySpriteCode(shield.spriteCode);
-                explanation.text = itemDataStorage.explanation;
-                itemName.text = shield.itemName + " " + shield.itemRarity + " Lv." + shield.enhancementLevel + "/15";
+                explanation.text = "";
+                itemName.text = shield.itemName + " " + shield.itemRarity + " Lv." + shield.enhancementLevel + "/60";
                 mainStat.text = shield.statBonusType + " " + CalculateMainStat(shield.statBonusType, shield.enhancementLevel).ToString("F1"); ;
                 subStat1.text = itemDataStorage.explanation;
                 subStat2.text = "";
@@ -228,7 +228,7 @@ public class InventoryManager : MonoBehaviour
         float value = min + (increment * level);
         return Mathf.RoundToInt(value);
     }
-    private float CalculateMainStat(string mainStat, int level)
+    public float CalculateMainStat(string mainStat, int level)
     {
         float increment = 0;
         float min = 0;
@@ -422,7 +422,11 @@ public class InventoryManager : MonoBehaviour
     public void CraftSelectedItem(Image selectiedItem)
     {
         int spriteCode = int.Parse(selectiedItem.sprite.name);
-        int partNumber = int.Parse(selectiedItem.sprite.name.Substring(0, 1));
+        CraftItem(spriteCode);
+    }
+    public void CraftItem(int spriteCode)
+    {
+        int partNumber = int.Parse(spriteCode.ToString()[0].ToString());
         switch (partNumber - 1)
         {
             case 0:
@@ -442,6 +446,12 @@ public class InventoryManager : MonoBehaviour
                 break;
             case 5:
                 CreateEquipment6(spriteCode);
+                break;
+            case 6:
+                CreateEquipment7(spriteCode);
+                break;
+            case 7:
+                CreateEquipment8(spriteCode);
                 break;
         }
     }
@@ -504,6 +514,39 @@ public class InventoryManager : MonoBehaviour
         DataManager.Instance.AddAmulet6(
             new AmuletData6(spriteCode, itemDataStorage.itemName, 0, mainOption,
         GetSubStatType(numbers[0]), GetSubStatType(numbers[1]), GetSubStatType(numbers[2]), GetSubStatType(numbers[3])));
+    }
+    private void CreateEquipment7(int spriteCode)
+    {
+        itemDataStorage.SetDataBySpriteCode(spriteCode);
+        int enhancementLevel = 1;
+        try
+        {
+            enhancementLevel = DataManager.Instance.GetEquipmentSlotData().weapon.enhancementLevel;
+            if (enhancementLevel < 60)
+            {
+                enhancementLevel++;
+            }
+        }
+        catch (Exception e) { }
+        DataManager.Instance.AddWeapon(
+            new WeaponData(spriteCode, itemDataStorage.itemName, itemDataStorage.itemRarity,
+            enhancementLevel, itemDataStorage.statBonusType));
+    }
+    private void CreateEquipment8(int spriteCode)
+    {
+        itemDataStorage.SetDataBySpriteCode(spriteCode);
+        try
+        {
+            DataManager.Instance.AddShield(
+                new ShieldData(spriteCode, itemDataStorage.itemName, itemDataStorage.statBonusType, itemDataStorage.itemRarity,
+                DataManager.Instance.GetEquipmentSlotData().weapon.enhancementLevel));
+        }
+        catch (Exception e)
+        { 
+            DataManager.Instance.AddShield(
+                new ShieldData(spriteCode, itemDataStorage.itemName, itemDataStorage.statBonusType, itemDataStorage.itemRarity,
+                1));
+        }
     }
     private string GetSubStatType(int num)
     {
@@ -624,5 +667,5 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    
+
 }
