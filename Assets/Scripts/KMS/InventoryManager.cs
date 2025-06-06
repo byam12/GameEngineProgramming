@@ -88,15 +88,15 @@ public class InventoryManager : MonoBehaviour
     {
         equipButton.SetActive(show);
     }
-        public void SetUnEquipBtn(bool show)
+    public void SetUnEquipBtn(bool show)
     {
         unEquipButton.SetActive(show);
     }
-        public void SetExtractBtn(bool show)
+    public void SetExtractBtn(bool show)
     {
         extractbutton.SetActive(show);
     }
-        public void SetEnhanceBtn(bool show)
+    public void SetEnhanceBtn(bool show)
     {
         enhancementButton.SetActive(show);
     }
@@ -352,7 +352,7 @@ public class InventoryManager : MonoBehaviour
                 break;
         }
         float value = min + (increment * level);
-        return value+""+percent;
+        return value + "" + percent;
     }
     public void UpdateUIWearingEquipMents() // 착용중인 장비 장비칸에 띄우기
     {
@@ -623,4 +623,6 @@ public class InventoryManager : MonoBehaviour
                 return "";
         }
     }
+    
+    
 }

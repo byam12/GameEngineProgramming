@@ -212,10 +212,12 @@ public class DataManager : MonoBehaviour
     public void AddWeapon(WeaponData weaponData)//무기획득 메소드
     {
         weaponInventory.weapons.Add(weaponData);
+        SaveToJson<WeaponInventory>(weaponInventory, "WeaponInventory");
     }
     public void AddShield(ShieldData shieldData)//방패획득 메소드
     {
         shieldInventory.shields.Add(shieldData);
+        SaveToJson<ShieldInventory>(shieldInventory, "ShieldInventory");
     }
     public void AddAmulet1(AmuletData1 amuletData1)//장신구획득 메소드
     {
@@ -248,6 +250,37 @@ public class DataManager : MonoBehaviour
     {
         amuletInventory6.amulets6.Add(amuletData6);
         SaveToJson<AmuletInventory6>(amuletInventory6, "AmuletInventory6");
+    }
+    public void SaveInventory(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                SaveToJson<AmuletInventory1>(amuletInventory1, "AmuletInventory1");
+                break;
+            case 2:
+                SaveToJson<AmuletInventory2>(amuletInventory2, "AmuletInventory2");
+                break;
+            case 3:
+                SaveToJson<AmuletInventory3>(amuletInventory3, "AmuletInventory3");
+                break;
+            case 4:
+                SaveToJson<AmuletInventory4>(amuletInventory4, "AmuletInventory4");
+                break;
+            case 5:
+                SaveToJson<AmuletInventory5>(amuletInventory5, "AmuletInventory5");
+                break;
+            case 6:
+                SaveToJson<AmuletInventory6>(amuletInventory6, "AmuletInventory6");
+                break;
+            case 7:
+                SaveToJson<WeaponInventory>(weaponInventory, "WeaponInventory");
+                break;
+            case 8:
+                SaveToJson<ShieldInventory>(shieldInventory, "ShieldInventory");
+                break;
+
+        }
     }
 
     public static void SaveToJson<T>(T data, string fileName)
