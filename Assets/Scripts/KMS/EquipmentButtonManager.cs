@@ -21,7 +21,7 @@ public class EquipmentButtonManager : MonoBehaviour
     {
         return buttons;
     }
-    void OnButtonClicked(int buttonIndex)
+    public void OnButtonClicked(int buttonIndex)
     {
         InventoryManager.Instance.SetItemInfoPanel(false);
         InventoryManager.Instance.SetInventoryActive(false);
@@ -39,11 +39,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory1.amulets1.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory1.amulets1[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory1.amulets1[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -55,11 +57,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory2.amulets2.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory2.amulets2[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory2.amulets2[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -71,11 +75,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory3.amulets3.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory3.amulets3[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory3.amulets3[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -87,11 +93,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory4.amulets4.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory4.amulets4[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory4.amulets4[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -103,11 +111,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory5.amulets5.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory5.amulets5[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory5.amulets5[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -119,11 +129,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < amuletInventory6.amulets6.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = amuletInventory6.amulets6[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(amuletInventory6.amulets6[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -135,11 +147,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < weaponInventory.weapons.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = weaponInventory.weapons[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(weaponInventory.weapons[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }
@@ -151,11 +165,13 @@ public class EquipmentButtonManager : MonoBehaviour
                 {
                     if (i < shieldInventory.shields.Count)
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = shieldInventory.shields[i].isEquiped;
                         invenButtons[i].enabled = true;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(shieldInventory.shields[i].spriteCode);
                     }
                     else
                     {
+                        invenButtons[i].GetComponent<Outline>().enabled = false;
                         invenButtons[i].enabled = false;
                         invenButtons[i].image.sprite = InventoryManager.Instance.GetSpriteBySpriteCode(0001);
                     }

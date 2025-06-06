@@ -4,11 +4,13 @@ public class WeaponData
 {
     public int spriteCode;
     public string itemName;
-    public int itemRarity;
+    public string itemRarity;
     public int enhancementLevel;
     public string statBonusTypes;
+    public bool isEquiped = false;
+
     public WeaponData(int spriteCode,
-    string itemName, int itemRarity,
+    string itemName, string itemRarity,
     int enhancementLevel, string statBonusTypes)
     {
         this.spriteCode = spriteCode;

@@ -10,6 +10,8 @@ public class AmuletData6
     public string subStat2Type;
     public string subStat3Type;
     public string subStat4Type;
+    public bool isEquiped = false;
+
     public AmuletData6(int spriteCode,
     string itemName, int enhancementLevel, string statBonusTypes,
     string subStat1Type, string subStat2Type, string subStat3Type, string subStat4Type)

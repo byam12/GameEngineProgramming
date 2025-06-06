@@ -139,27 +139,35 @@ public class DataManager : MonoBehaviour
         switch (slotNum)
         {
             case 0:
+                for (int i = 0; i < amuletInventory1.amulets1.Count; i++) amuletInventory1.amulets1[i].isEquiped = false;
                 equipmentSlotData.amulet1 = null;
                 break;
             case 1:
+                for (int i = 0; i < amuletInventory2.amulets2.Count; i++) amuletInventory2.amulets2[i].isEquiped = false;
                 equipmentSlotData.amulet2 = null;
                 break;
             case 2:
+                for (int i = 0; i < amuletInventory3.amulets3.Count; i++) amuletInventory3.amulets3[i].isEquiped = false;
                 equipmentSlotData.amulet3 = null;
                 break;
             case 3:
+                for (int i = 0; i < amuletInventory4.amulets4.Count; i++) amuletInventory4.amulets4[i].isEquiped = false;
                 equipmentSlotData.amulet4 = null;
                 break;
             case 4:
+                for (int i = 0; i < amuletInventory5.amulets5.Count; i++) amuletInventory5.amulets5[i].isEquiped = false;
                 equipmentSlotData.amulet5 = null;
                 break;
             case 5:
+                for (int i = 0; i < amuletInventory6.amulets6.Count; i++) amuletInventory6.amulets6[i].isEquiped = false;
                 equipmentSlotData.amulet6 = null;
                 break;
             case 6:
+                for (int i = 0; i < weaponInventory.weapons.Count; i++) weaponInventory.weapons[i].isEquiped = false;
                 equipmentSlotData.weapon = null;
                 break;
             case 7:
+                for (int i = 0; i < shieldInventory.shields.Count; i++) shieldInventory.shields[i].isEquiped = false;
                 equipmentSlotData.shield = null;
                 break;
         }
