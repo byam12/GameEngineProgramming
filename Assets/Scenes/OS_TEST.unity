@@ -544,6 +544,8 @@ MonoBehaviour:
   - {fileID: 1390382520}
   running: 0
   moving: 0
+  attackCoolTiem: 2
+  nextPatternPossible: 0
 --- !u!95 &768138832
 Animator:
   serializedVersion: 7
