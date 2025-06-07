@@ -79,7 +79,7 @@ public class BossTemplate : MonoBehaviour
     public bool IsParried { get; private set; }
     public bool IsGroggy { get; private set; }
 
-    private const string WalkParam = "IsWalking";
+    public string WalkParam = "IsWalking";
     public bool running = false;
     public bool moving = false;
 
@@ -107,7 +107,11 @@ public class BossTemplate : MonoBehaviour
         if (state == BossState.Idle && isPlayerClose())
         {
             //SetIdle();
-            StartPattern();
+            if (Time.time > nextPatternPossible)
+            {
+                if(!running)
+                    StartPattern(); 
+            }
         }
         else if (state == BossState.Idle && !isPlayerClose())
         {
@@ -115,7 +119,7 @@ public class BossTemplate : MonoBehaviour
             Move();
         }
 
-        if(state == BossState.Attack && isPlayerClose() && Time.time > nextPatternPossible)
+        if((state  ==  BossState.Idle || state == BossState.Attack) && isPlayerClose() && Time.time > nextPatternPossible)
         {
             if(!running)
             StartPattern();

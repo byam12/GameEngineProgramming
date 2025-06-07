@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de0693689083f0540aea62bf10823dbc, type: 3}
-  m_Name: Attack1
-  m_EditorClassIdentifier: 
-  trigger: Attack1
-  hitboxIndices: 01000000
+  m_Script: {fileID: 0}
+  m_Name: JumpDown
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderJumpDown
+  trigger: BlinkDown
+  hitboxIndex: 0
   onAttackEvent:
     m_PersistentCalls:
       m_Calls: []
   nextCommands: []
-  isSlashVert: 0
-  isSlashHori: 0
+  determistic: {fileID: 0}
+  landingHitbox: 0

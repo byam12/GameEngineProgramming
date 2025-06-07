@@ -9,7 +9,11 @@ public class SwordBoss : BossTemplate
     {
         foreach (int idx in indices)
         {
-            if (idx < 0 || idx >= hitbox.Count) continue;
+            if (idx < 0 || idx >= hitbox.Count)
+            {
+                Debug.Log("qwrong num");
+                continue;
+            }
             hitbox[idx].SetActive(true);
         }
     }

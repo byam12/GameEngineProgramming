@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de0693689083f0540aea62bf10823dbc, type: 3}
-  m_Name: Attack1
+  m_Script: {fileID: 11500000, guid: 603e48378b7f6b84d816c61939b1f29d, type: 3}
+  m_Name: MultiAttack
   m_EditorClassIdentifier: 
-  trigger: Attack1
-  hitboxIndices: 01000000
-  onAttackEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  nextCommands: []
-  isSlashVert: 0
-  isSlashHori: 0
+  safeCells: 2
+  Trigger: Attack3
+  hitboxPrefab: {fileID: 1760868472797603471, guid: 52dce6dfd6fbbee4cbdf3dd66ac13f96, type: 3}
