@@ -285,7 +285,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_Counter_0: 9040421696918712540
+      Zweihander_Counter_1: -5578944200596530337
+      Zweihander_Counter_2: -6019851784145844109
+      Zweihander_Counter_3: 6745631609206204122
+      Zweihander_Counter_4: -886081623581504309
+      Zweihander_Counter_5: -8488071416525697197
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

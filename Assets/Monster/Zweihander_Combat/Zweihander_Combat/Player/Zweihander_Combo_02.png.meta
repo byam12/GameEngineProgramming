@@ -785,7 +785,33 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_Combo_02_0: -1039955765222100616
+      Zweihander_Combo_02_1: -7733042464752132362
+      Zweihander_Combo_02_10: -454499797331290976
+      Zweihander_Combo_02_11: -8701391092217086189
+      Zweihander_Combo_02_12: 2362590405033897435
+      Zweihander_Combo_02_13: -6860664939639119313
+      Zweihander_Combo_02_14: -30521937047863286
+      Zweihander_Combo_02_15: -367084688683117250
+      Zweihander_Combo_02_16: -5246406804251207047
+      Zweihander_Combo_02_17: 3733044428829869121
+      Zweihander_Combo_02_18: 4627055604233101620
+      Zweihander_Combo_02_19: 2922770861772617949
+      Zweihander_Combo_02_2: -8972926558542604945
+      Zweihander_Combo_02_20: -4550749037309809884
+      Zweihander_Combo_02_21: 7482446579066161498
+      Zweihander_Combo_02_22: 5366565695201521622
+      Zweihander_Combo_02_23: -53690041528419850
+      Zweihander_Combo_02_24: 6339207058852868797
+      Zweihander_Combo_02_25: -1207285060579752816
+      Zweihander_Combo_02_3: 4886498386880652671
+      Zweihander_Combo_02_4: 337281505109257903
+      Zweihander_Combo_02_5: -2808607363815281702
+      Zweihander_Combo_02_6: -5784923999660119991
+      Zweihander_Combo_02_7: 661313665587526899
+      Zweihander_Combo_02_8: 6662002285782592315
+      Zweihander_Combo_02_9: 6486132735213649363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

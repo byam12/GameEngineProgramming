@@ -560,7 +560,24 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_Combo_01_0: -6929338843211237542
+      Zweihander_Combo_01_1: 8548583588689311342
+      Zweihander_Combo_01_10: 2283480343976295778
+      Zweihander_Combo_01_11: 107430095263905562
+      Zweihander_Combo_01_12: 2371678066997491203
+      Zweihander_Combo_01_13: -9000668993423290086
+      Zweihander_Combo_01_14: 6411184218176878700
+      Zweihander_Combo_01_15: 717492609749905387
+      Zweihander_Combo_01_16: 2824495751499478896
+      Zweihander_Combo_01_2: -5275103929797681414
+      Zweihander_Combo_01_3: 2202286854152490457
+      Zweihander_Combo_01_4: 816838193009966906
+      Zweihander_Combo_01_5: 8825328340852133883
+      Zweihander_Combo_01_6: -4305353536171506479
+      Zweihander_Combo_01_7: 6762992616631046450
+      Zweihander_Combo_01_8: 2573826728560664557
+      Zweihander_Combo_01_9: 143767984618182172
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

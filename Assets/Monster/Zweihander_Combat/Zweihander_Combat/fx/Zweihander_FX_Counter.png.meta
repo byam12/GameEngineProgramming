@@ -710,7 +710,30 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_FX_Counter_0: -4528189924454791555
+      Zweihander_FX_Counter_1: -6629462753195620601
+      Zweihander_FX_Counter_10: -5160917015288023937
+      Zweihander_FX_Counter_11: 6127172917471555403
+      Zweihander_FX_Counter_12: 118384924185219977
+      Zweihander_FX_Counter_13: -8010402132717337409
+      Zweihander_FX_Counter_14: -8472704049182527174
+      Zweihander_FX_Counter_15: 2322506169805737525
+      Zweihander_FX_Counter_16: -546059083130082154
+      Zweihander_FX_Counter_17: 4206513521712730891
+      Zweihander_FX_Counter_18: -1994775707500436123
+      Zweihander_FX_Counter_19: -534540542708383211
+      Zweihander_FX_Counter_2: 4591406817573756633
+      Zweihander_FX_Counter_20: 5375180286116556842
+      Zweihander_FX_Counter_21: 2466942433038537018
+      Zweihander_FX_Counter_22: -5732629483095774406
+      Zweihander_FX_Counter_3: 1281298956733618925
+      Zweihander_FX_Counter_4: -4757105720755447582
+      Zweihander_FX_Counter_5: 170043007666085866
+      Zweihander_FX_Counter_6: 6203543044995013034
+      Zweihander_FX_Counter_7: -667864070812316274
+      Zweihander_FX_Counter_8: 8596126377850627043
+      Zweihander_FX_Counter_9: 5488388052657208028
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

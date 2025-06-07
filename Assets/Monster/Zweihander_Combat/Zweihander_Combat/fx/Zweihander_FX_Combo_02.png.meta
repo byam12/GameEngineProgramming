@@ -785,7 +785,33 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zweihander_FX_Combo_02_0: -4890835358558280955
+      Zweihander_FX_Combo_02_1: 4898546361605114437
+      Zweihander_FX_Combo_02_10: -1577973800237627839
+      Zweihander_FX_Combo_02_11: -8208979662309546733
+      Zweihander_FX_Combo_02_12: 4026200591886927926
+      Zweihander_FX_Combo_02_13: -2474090097022961646
+      Zweihander_FX_Combo_02_14: 6436119875497305230
+      Zweihander_FX_Combo_02_15: -5931219021891032611
+      Zweihander_FX_Combo_02_16: -4238672081407201952
+      Zweihander_FX_Combo_02_17: -8481938383519845458
+      Zweihander_FX_Combo_02_18: 7133120657220205011
+      Zweihander_FX_Combo_02_19: -5233350921042614691
+      Zweihander_FX_Combo_02_2: 6511974339493783620
+      Zweihander_FX_Combo_02_20: 7844180362133700391
+      Zweihander_FX_Combo_02_21: -2554912823484448881
+      Zweihander_FX_Combo_02_22: -9041740960277961383
+      Zweihander_FX_Combo_02_23: -7611596574208461877
+      Zweihander_FX_Combo_02_24: 6621117438073428341
+      Zweihander_FX_Combo_02_25: 5784541277248867224
+      Zweihander_FX_Combo_02_3: -7034907322457034301
+      Zweihander_FX_Combo_02_4: -7723470422060590579
+      Zweihander_FX_Combo_02_5: 132001508934706857
+      Zweihander_FX_Combo_02_6: 321053966737585327
+      Zweihander_FX_Combo_02_7: 1577131337844933258
+      Zweihander_FX_Combo_02_8: -8753103588721450042
+      Zweihander_FX_Combo_02_9: -2956249344441693233
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

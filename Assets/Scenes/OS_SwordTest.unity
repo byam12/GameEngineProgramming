@@ -1776,7 +1776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &807707904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1886,6 +1886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialCommands:
   - {fileID: 11400000, guid: 0897db0ff755cfb488d70bb86491888c, type: 2}
+  - {fileID: 11400000, guid: 754cae9a31b822e43bc8ea98fad96afe, type: 2}
   Animator: {fileID: 807707906}
   stamina: 100
   groggyThreshold: 0
