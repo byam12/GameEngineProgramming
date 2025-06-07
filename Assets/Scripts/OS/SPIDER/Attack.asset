@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: WaitFollow
-  m_EditorClassIdentifier: Assembly-CSharp::SpiderWaitFollow
-  trigger: BlinkDown
+  m_Name: Attack
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderCommand
+  trigger: Attack1
   hitboxIndex: 0
   onAttackEvent:
     m_PersistentCalls:
       m_Calls: []
-  nextCommands:
-  - {fileID: 11400000, guid: 404bf5c82aa837e45ae40604e8f5ef82, type: 2}
+  nextCommands: []
   determistic: {fileID: 0}
-  followTime: 2
-  followSpeed: 5

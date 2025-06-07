@@ -12,6 +12,7 @@ TagManager:
   - Hit
   - NPC
   - Item
+  - Hitbox
   layers:
   - Default
   - TransparentFX

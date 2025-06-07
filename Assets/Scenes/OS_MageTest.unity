@@ -1328,9 +1328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 0.3
   checkDuration: 0.2
-  rend: {fileID: 0}
-  col: {fileID: 0}
-  hasCollided: 0
+  damage: 10
 --- !u!1 &1021767853
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,9 +2034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 0.4
   checkDuration: 0.2
-  rend: {fileID: 0}
-  col: {fileID: 0}
-  hasCollided: 0
+  damage: 10
 --- !u!95 &1390382525
 Animator:
   serializedVersion: 7
@@ -2898,8 +2894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialCommands:
-  - {fileID: 11400000, guid: 6fe1f6cdc214089429e683a6516bc8bc, type: 2}
-  - {fileID: 11400000, guid: b3447e98ef4c10947bb092d6bfb3a13a, type: 2}
+  - {fileID: 11400000, guid: 82e05a06ad1dc5949b7c70a140343ac5, type: 2}
   Animator: {fileID: 0}
   stamina: 100
   groggyThreshold: 0

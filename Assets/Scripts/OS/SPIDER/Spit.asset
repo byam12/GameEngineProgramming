@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: Attack1
+  m_Name: Spit
   m_EditorClassIdentifier: Assembly-CSharp::SpiderCommand
-  trigger: Attack1
+  trigger: Attack2
   hitboxIndex: 0
   onAttackEvent:
     m_PersistentCalls:

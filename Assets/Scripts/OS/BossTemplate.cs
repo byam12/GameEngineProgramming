@@ -68,6 +68,11 @@ public class BossCommand : ScriptableObject, IBossCommand
 
 public class BossTemplate : MonoBehaviour
 {
+    public bool startFacingRight = true;
+    protected bool facingLeft;
+
+
+
     public List<ScriptableObject> initialCommands = new List<ScriptableObject>();
     public Animator Animator;
     public float stamina = 100f;
@@ -91,18 +96,30 @@ public class BossTemplate : MonoBehaviour
     void Awake()
     {
         Animator = GetComponent<Animator>();
+
+        Vector3 s = transform.localScale;
+        float sx = Mathf.Abs(s.x);
+        if (startFacingRight)
+            s.x = sx;
+        else
+            s.x = -sx;
+        transform.localScale = s;
+        facingLeft = !startFacingRight;
+
     }
 
     void Update()
     {
+        float dir = PlayerPosition().x - transform.position.x;
+        if (dir > 0.1f) 
+            FaceDirection(false);
+        else if (dir < -0.1f) 
+            FaceDirection(true);
 
         if ((this.transform.position - PlayerPosition()).magnitude > 5f && !running && !moving)
             {
                 SetIdle();
             }
-
-
-
 
         if (state == BossState.Idle && isPlayerClose())
         {
@@ -199,7 +216,11 @@ public class BossTemplate : MonoBehaviour
         moving = false;
 
         state = BossState.Parried;
-        Animator.SetTrigger("Parried");
+        //Animator.SetTrigger("Parried");
+        SetIdle();
+        groggyThreshold += 10f;
+
+        nextPatternPossible = Time.time + 10f;
         IsParried = true;
     }
 
@@ -235,7 +256,10 @@ public class BossTemplate : MonoBehaviour
 
     public Vector3 PlayerPosition()
     {
-        // change
+        Player p = FindAnyObjectByType<Player>();
+        if (p != null)
+            return p.transform.position;
+
         return Vector3.zero;
     }
 
@@ -247,5 +271,15 @@ public class BossTemplate : MonoBehaviour
         Debug.Log("setIdle");
         moving = false;
         running = false;
+    }
+
+    void FaceDirection(bool toLeft)
+    {
+        if (facingLeft == toLeft) return;
+        facingLeft = toLeft;
+
+        Vector3 s = transform.localScale;
+        s.x = -s.x;
+        transform.localScale = s;
     }
 }

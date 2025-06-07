@@ -50,8 +50,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<Collider2D>();
-        healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
-        manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
+        //healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+        //manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
         //temp code
         UpdateHP(hp, maxHP);
         UpdateMP(mp, maxMP);
@@ -376,7 +376,7 @@ public class Player : MonoBehaviour
         }
         ratio = current / max;
 
-        healthBar.rectTransform.localPosition = new Vector3(healthBar.rectTransform.rect.width * ratio - healthBar.rectTransform.rect.width, 0, 0);
+        //healthBar.rectTransform.localPosition = new Vector3(healthBar.rectTransform.rect.width * ratio - healthBar.rectTransform.rect.width, 0, 0);
     }
 
     // Update mana_bar
@@ -390,7 +390,7 @@ public class Player : MonoBehaviour
         }
         else ratio = current / max;
 
-        manaBar.rectTransform.localPosition = new Vector3(manaBar.rectTransform.rect.width * ratio - manaBar.rectTransform.rect.width, 0, 0);
+        //manaBar.rectTransform.localPosition = new Vector3(manaBar.rectTransform.rect.width * ratio - manaBar.rectTransform.rect.width, 0, 0);
     }
 
     // Get whether player is looking right side

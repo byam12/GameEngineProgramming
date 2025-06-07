@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,7 +13,7 @@ public class SpiderCommand : ScriptableObject, IBossCommand
     public List<SpiderCommand> nextCommands = new List<SpiderCommand>();
     public SpiderCommand determistic;
 
-    public IEnumerator Execute(BossTemplate boss)
+    virtual public IEnumerator Execute(BossTemplate boss)
     {
         if (trigger != null)
         { boss.Animator.SetTrigger(trigger); }
@@ -63,7 +64,7 @@ public class SpiderCommand : ScriptableObject, IBossCommand
 [CreateAssetMenu(menuName = "Spider/JumpUp")]
 public class SpiderJumpUp : SpiderCommand
 {
-    public IEnumerator Execute(BossTemplate boss)
+    override public IEnumerator Execute(BossTemplate boss)
     {
         boss.Animator.SetTrigger(trigger);       
         AnimatorClipInfo[] clipInfos = boss.Animator.GetCurrentAnimatorClipInfo(0);
@@ -75,7 +76,6 @@ public class SpiderJumpUp : SpiderCommand
 
         yield return new WaitForSeconds(waitTime);
 
-        //make boss invisible, unattackable
 
         if (boss.IsParried || boss.IsGroggy) yield break;
 
@@ -90,22 +90,28 @@ public class SpiderWaitFollow : SpiderCommand
     public float followTime = 2f;
     public float followSpeed = 5f;
 
-    public IEnumerator Execute(Spier boss)
+
+    override public IEnumerator Execute(BossTemplate boss)
     {
+
+        Debug.Log("the position is "+boss.transform.position);
+
+           
+
         float t = 0f;
         while (t < followTime)
         {
             t += Time.deltaTime;
 
             Vector3 target = boss.PlayerPosition();
-            boss.transform.position = Vector3.MoveTowards(
-                boss.transform.position, target, followSpeed * Time.deltaTime);
+            boss.transform.position = Vector3.MoveTowards(boss.transform.position, target, followSpeed * Time.deltaTime);
+            Debug.Log(boss.transform.position);
 
             yield return null;
             if (boss.IsParried || boss.IsGroggy) yield break;
         }
 
-        // 고정 단계(JumpDown)로
+        
         if (determistic != null)
             yield return boss.StartCoroutine(determistic.Execute(boss));
     }
@@ -117,10 +123,10 @@ public class SpiderJumpDown : SpiderCommand
     public int landingHitbox = 0;
 
 
-    public IEnumerator Execute(BossTemplate boss)
+    override public IEnumerator Execute(BossTemplate boss)
     {
-        boss.transform.position = boss.PlayerPosition();
-        
+        //boss.transform.position = boss.PlayerPosition();
+
 
         //make visible again
 
@@ -150,5 +156,14 @@ public class SpiderJumpDown : SpiderCommand
 
 public class Spier : BossTemplate
 {
-
+    public void DisableRenderer()
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+    }
+    public void EnableRenderer()
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>())
+            r.enabled = true;
+    }
 }
