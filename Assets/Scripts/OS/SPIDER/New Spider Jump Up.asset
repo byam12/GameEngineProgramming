@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: New Spider Jump Up
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderJumpUp
+  trigger: BlinkUp
+  hitboxIndex: 0
+  onAttackEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8027257610931473243, guid: f9f5d9b0067ee384f8b54622904a8103, type: 3}
+        m_TargetAssemblyTypeName: Spier, Assembly-CSharp
+        m_MethodName: DisableRenderer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  nextCommands: []
+  determistic: {fileID: 11400000, guid: 03fc4afbaaa50534b8f95aef01cefad7, type: 2}
